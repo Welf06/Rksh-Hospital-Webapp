@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
 	Card,
 	Typography,
@@ -12,16 +12,11 @@ import {
 	AccordionBody,
 } from "@material-tailwind/react";
 import {
-	PresentationChartBarIcon,
-	ShoppingBagIcon,
-	Cog6ToothIcon,
-	InboxIcon,
-	PowerIcon,
 	UserIcon,
 	PencilSquareIcon,
 	CurrencyRupeeIcon,
-   Bars3Icon,
-   XMarkIcon
+	Bars3Icon,
+	ArrowLeftIcon
 } from "@heroicons/react/24/solid";
 import {
 	ChevronRightIcon,
@@ -31,18 +26,18 @@ import {
 
 import { useOnClickOutside } from "../utils/useClickOutside";
 
-function SidebarMenu({setMenuOpen}) {
+function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 	const [open, setOpen] = useState(0);
-
 	const handleOpen = (value) => {
 		setOpen(open === value ? 0 : value);
 	};
 	return (
-		<Card className="fixed top-14 left-0 h-[calc(100vh-3.5rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-white-900/5 bg-background text-white rounded-none">
-         <XMarkIcon className="h-6 w-6 text-white absolute top-2 right-2 cursor-pointer" 
-            onClick={() => setMenuOpen(false)}
-         />
-			<div className="mb-2 p-4">
+		<Card className="absolute top-14 left-0 h-[calc(100vh)] w-full max-w-[20rem] p-4 shadow-xl shadow-white-900/5 bg-background text-white rounded-none z-50">
+			<ArrowLeftIcon
+				className="h-6 w-6 text-white absolute top-4 right-4 cursor-pointer"
+				onClick={() => setMenuOpen(false)}
+			/>
+			<div className="mb-2 p-4 pt-12">
 				<div className="flex justify-left items-center gap-4">
 					<UserCircleIcon className="h-12 w-12 text-white" />
 					<div className="flex flex-col justify-left items-start">
@@ -86,8 +81,11 @@ function SidebarMenu({setMenuOpen}) {
 					</ListItem>
 					<AccordionBody className="py-1 text-white">
 						<List className="p-0 pl-10 text-white">
-							<ListItem>Completed</ListItem>
-							<ListItem>Ongoing</ListItem>
+							<ListItem onClick={() => {
+								setPage('patients');
+								setMenuOpen(false)}}>Ongoing</ListItem>
+							<ListItem onClick={() => {setPage('completed');
+							setMenuOpen(false)}}>Completed</ListItem>
 						</List>
 					</AccordionBody>
 				</Accordion>
@@ -120,8 +118,13 @@ function SidebarMenu({setMenuOpen}) {
 						</AccordionHeader>
 					</ListItem>
 					<AccordionBody className="py-1">
-               <List className="p-0 pl-10 text-white">
-							<ListItem>Doctors</ListItem>
+						<List className="p-0 pl-10 text-white">
+							<ListItem
+							onClick = {() => {
+								setModal('doctors');
+								setMenuOpen(false);
+							}}
+							>Doctors</ListItem>
 							<ListItem>Beds</ListItem>
 							<ListItem>Ambulances</ListItem>
 							<ListItem>Tests</ListItem>
@@ -171,21 +174,40 @@ function SidebarMenu({setMenuOpen}) {
 	);
 }
 
-export default function Sidebar() {
-   const [open, setMenuOpen] = useState(false);
-   const node = useRef();
-   const handleOpen = () => {
-      setMenuOpen(true);
-   }
+export default function Sidebar({setPage, setModal}) {
+	const [open, setMenuOpen] = useState(false);
+	const node = useRef();
 
-   // useOnClickOutside(node, () => setOpen(false));
-   console.log(open);
-   return(
-      <>
-         <Bars3Icon ref={node} className="h-12 w-12 ml-10 cursor-pointer" onClick = {() => {
-            setMenuOpen(true);
-         }}/>
-         {open && <SidebarMenu setMenuOpen={setMenuOpen}/>}
-      </>
-   )
+	useEffect(() => {
+		if (open) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "unset";
+		}
+	}, [open]);
+
+	const handleOpen = () => {
+		setMenuOpen(true);
+	};
+
+	// useOnClickOutside(node, () => setMenuOpen(false));
+	return (
+		<>
+			<Bars3Icon
+				className="h-12 w-12 ml-10 cursor-pointer absolute left-4 top-20"
+				onClick={() => {
+					setMenuOpen(true);
+               
+				}}
+			/>
+			{open && <SidebarMenu setMenuOpen={setMenuOpen} setPage={setPage} setModal={setModal}/>}
+         {open && (
+            <div className="bg-black opacity-25 absolute top-14 left-0 h-[100%] w-[100%] z-10 " onClick={() => {
+               setMenuOpen(false)
+            }}>
+
+            </div>
+         )}
+		</>
+	);
 }
