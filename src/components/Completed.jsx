@@ -18,6 +18,8 @@ import {
 import MUIDataTable from "mui-datatables";
 
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const options = {
 	filterType: "checkbox",
@@ -32,59 +34,42 @@ const options = {
 	searchAlwaysOpen: true,
 };
 
+const toastOptions = {
+	position: "top-center",
+	autoClose: 1000,
+	hideProgressBar: true,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "light",
+};
+
 function Completed() {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
-	console.log(
-		`${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCompletedCase`
-	);
-	// useEffect(() => {
-	//    axios.get(`${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCompletedCases`, {
-	//       name: "Test",
-	//       email: " test@gmail.com",
-	//       password: " abc123"
-	//    } )
-	//    .then(res => {
-	//       if (res.status === 301) {
-	//          const redirectUrl = res.headers.location;
-	//          console.log('Received redirect response. Redirecting to:', redirectUrl);
-	//          return axios.get(redirectUrl); // Make a new request to the redirected URL
-	//        }
-	//       setData(res.data)
-	//       setLoading(false)
-	//    })
-	//    .catch(err => {
-	//       console.log(err)
-	//    })
-	// }, [])
 
 	useEffect(() => {
 		const sendApiCall = async () => {
-			const url =
-				"http://dev-env.eba-dbbpfsiz.ap-south-1.elasticbeanstalk.com/hospital/addDoctor/";
+			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getDoctors/`;
 			// const url = 'http://127.0.0.1:8000/hospital/getCases/';
 
 			const data = {
-				hospital: {
-					email: " test2@gmail.com",
-					password: " 1234",
-				},
-				name: "bcd",
-				specialization: "Surgery",
-				phone: 907534253,
-				qualification: "MBBS",
+				email: " test@gmail.com",
+				password: " abc123",
 			};
-
-			const headers = { "Content-Type": "application/json" };
-
+         
+         const headers = { "Content-Type": "application/json" };
+         console.log(data);
 			try {
 				const response = await axios.post(url, JSON.stringify(data), {
-					headers,
-				});
+				headers,
+			});
 				console.log(response.data);
 				// Handle the response data here
 			} catch (error) {
 				console.error(error);
+				toast.error(error.response.data.detail, toastOptions);
 				// Handle the error here
 			}
 		};
@@ -179,6 +164,18 @@ function Completed() {
 	];
 	return (
 		<div>
+			<ToastContainer
+				position="top-center"
+				autoClose={1000}
+				hideProgressBar
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
 			<Typography variant="h3" color="black" className="ml-32 mt-7">
 				Completed Patients Record
 			</Typography>

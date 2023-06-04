@@ -16,7 +16,7 @@ import {
 	PencilSquareIcon,
 	CurrencyRupeeIcon,
 	Bars3Icon,
-	ArrowLeftIcon
+	ArrowLeftIcon,
 } from "@heroicons/react/24/solid";
 import {
 	ChevronRightIcon,
@@ -81,11 +81,22 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 					</ListItem>
 					<AccordionBody className="py-1 text-white">
 						<List className="p-0 pl-10 text-white">
-							<ListItem onClick={() => {
-								setPage('patients');
-								setMenuOpen(false)}}>Ongoing</ListItem>
-							<ListItem onClick={() => {setPage('completed');
-							setMenuOpen(false)}}>Completed</ListItem>
+							<ListItem
+								onClick={() => {
+									setPage("patients");
+									setMenuOpen(false);
+								}}
+							>
+								Ongoing
+							</ListItem>
+							<ListItem
+								onClick={() => {
+									setPage("completed");
+									setMenuOpen(false);
+								}}
+							>
+								Completed
+							</ListItem>
 						</List>
 					</AccordionBody>
 				</Accordion>
@@ -120,15 +131,26 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 					<AccordionBody className="py-1">
 						<List className="p-0 pl-10 text-white">
 							<ListItem
-							onClick = {() => {
-								setModal('doctors');
-								setMenuOpen(false);
-							}}
-							>Doctors</ListItem>
+								onClick={() => {
+									setModal("doctors");
+									setMenuOpen(false);
+								}}
+							>
+								Doctors
+							</ListItem>
+							<ListItem
+								onClick={() => {
+									setModal("tests");
+									setMenuOpen(false);
+								}}
+							>Tests</ListItem>
+							<ListItem
+								onClick={() => {
+									setModal("treatments");
+									setMenuOpen(false);
+								}}>Treatments</ListItem>
 							<ListItem>Beds</ListItem>
-							<ListItem>Ambulances</ListItem>
-							<ListItem>Tests</ListItem>
-							<ListItem>Treatments</ListItem>
+							{/* <ListItem>Ambulances</ListItem> */}
 							<ListItem>Patients</ListItem>
 						</List>
 					</AccordionBody>
@@ -174,7 +196,7 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 	);
 }
 
-export default function Sidebar({setPage, setModal}) {
+export default function Sidebar({ setPage, setModal }) {
 	const [open, setMenuOpen] = useState(false);
 	const node = useRef();
 
@@ -197,17 +219,23 @@ export default function Sidebar({setPage, setModal}) {
 				className="h-12 w-12 ml-10 cursor-pointer absolute left-4 top-20"
 				onClick={() => {
 					setMenuOpen(true);
-               
 				}}
 			/>
-			{open && <SidebarMenu setMenuOpen={setMenuOpen} setPage={setPage} setModal={setModal}/>}
-         {open && (
-            <div className="bg-black opacity-25 absolute top-14 left-0 h-[100%] w-[100%] z-10 " onClick={() => {
-               setMenuOpen(false)
-            }}>
-
-            </div>
-         )}
+			{open && (
+				<SidebarMenu
+					setMenuOpen={setMenuOpen}
+					setPage={setPage}
+					setModal={setModal}
+				/>
+			)}
+			{open && (
+				<div
+					className="bg-black opacity-25 absolute top-14 left-0 h-[100%] w-[100%] z-10 "
+					onClick={() => {
+						setMenuOpen(false);
+					}}
+				></div>
+			)}
 		</>
 	);
 }
