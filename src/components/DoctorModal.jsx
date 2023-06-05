@@ -7,6 +7,8 @@ import {
 	ListItemPrefix,
 	ListItem,
 	List,
+	Select,
+	Option,
 } from "@material-tailwind/react";
 
 import { UserCircleIcon } from "@heroicons/react/24/solid";
@@ -32,6 +34,7 @@ const toastOptions = {
 function DoctorModal({ setDoctorModal, sampleData }) {
 	const [doctors, setDoctors] = useState([]);
 	const [selectedDoctors, setSelectedDoctors] = useState([]);
+   const [doctorsList, setDoctorsList] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const { detail, setDetail } = useContext(DetailContext);
@@ -43,7 +46,9 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 	}, []);
 
 	useEffect(() => {
-		console.log(selectedDoctors);
+      const RemainingDoctors = doctors.filter((doctor) => !selectedDoctors.some(selectedDoctor => selectedDoctor.name === doctor.name));
+      console.log(RemainingDoctors);
+		setDoctorsList(RemainingDoctors);
 	}, [selectedDoctors]);
 
 	const sendDocoterApiCall = async () => {
@@ -60,6 +65,7 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 			});
 			console.log(response.data.doctors);
 			setDoctors(response.data.doctors);
+         setDoctorsList(response.data.doctors);
 			// Handle the response data here
 		} catch (error) {
 			console.error(error);
@@ -82,7 +88,9 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 				headers,
 			});
 			console.log(response.data.caseDoctors);
-			setSelectedDoctors(response.data.caseDoctors);
+         const doctors = response.data.caseDoctors.map((doctor) => doctor.doctor);
+         console.log(doctors);
+			setSelectedDoctors(doctors);
 			// Handle the response data here
 		} catch (error) {
 			console.error(error);
@@ -91,18 +99,72 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 		}
 	};
 
-	const sendAddTestsTreatmentsApiCall = async () => {
+	const sendAddDoctorsApiCall = async () => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addCaseTestsTreatmentsDoctors/`;
+      const doctor = selectedDoctors.map((doctor) => doctor.name)
+      console.log(doctor);
 		const data = {
 			hospital: {
 				email: "info@cityhospital.com",
 				password: "mypassword123",
 			},
-			name: "xyz",
-			caseTests: ["TestName"],
-			caseTreatments: ["TreatmentName"],
-			caseDoctors: ["DoctorName"],
+			name: detail.name,
+			caseTests: [],
+			caseTreatments: [],
+			caseDoctors: doctor,
 		};
+
+      const headers = { "Content-Type": "application/json" };
+
+      try {
+			const response = await axios.post(url, JSON.stringify(data), {
+				headers,
+			});
+			console.log(response.data);
+			// const remove = await sendRemoveTestsTreatmentsApiCall();
+			toast.success("Doctors Edited successfully", toastOptions);
+			setLoading(false);
+			// Handle the response data here
+		}
+		catch (error) {
+			console.error(error);
+			toast.error(error.response.data.detail, toastOptions);
+			setLoading(false);
+			// Handle the error here
+		}
+	};
+
+   const sendRemoveTestsTreatmentsApiCall = async (doctorName) => {
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/removeCaseTestsTreatmentsDoctors/`;
+
+		console.log("Removed Doctors: ", doctorName)
+
+		const data = {
+			hospital: {
+				email: "info@cityhospital.com",
+				password: "mypassword123",
+			},
+			name: detail.name,
+			caseTests: [],
+			caseTreatments: [],
+			caseDoctors: [doctorName],
+		};
+
+		const headers = { "Content-Type": "application/json" };
+
+		try {
+			const response = await axios.post(url, JSON.stringify(data), {
+				headers,
+			});
+			console.log("Remove Tests and Treatments Response: ",response.data);
+			// Handle the response data here
+		}
+		catch (error) {
+			console.error(error);
+			toast.error(error.response.data.detail, toastOptions);
+			setLoading(false);
+			// Handle the error here
+		}
 	};
 
 	return (
@@ -151,15 +213,13 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 						</Typography>
 						<hr className="mt-[-1rem] border-gray-300 w-[95%] m-[auto]" />
 						<List>
-							{selectedDoctors.map(({ doctor, hospitalcase, id }, index) => {
-								{
-									console.log(doctor);
-								}
+							{selectedDoctors.map(({id, name, hospital, email, phone, qualification, specialization}, index) => {
+                        {console.log(id, name, hospital, email, phone, qualification, specialization, index)}
 								return (
-									<ListItem key={id} className="p-0">
+									<ListItem key={name} className="p-0">
 										<UserCircleIcon className="w-10 h-10 text-blue-gray ml-4" />
 										<label
-											htmlFor={id}
+											htmlFor={name}
 											className="ml-[-1rem] py-2 flex items-center w-full cursor-pointer"
 										>
 											<ListItemPrefix className="mr-3"></ListItemPrefix>
@@ -168,24 +228,50 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 													color="blue-gray"
 													className="font-medium pl-4"
 												>
-													{doctor.name}, {doctor.qualification}
+													{name}, {qualification}
 												</Typography>
 												<Typography
 													color="blue-gray"
 													className="pl-4"
 													variant="small"
 												>
-													{doctor.specialization}
+													{specialization}
 												</Typography>
 											</div>
 										</label>
 									</ListItem>
 								);
 							})}
+							<div key={123} className="p-0 flex content-center items-center">
+								<UserCircleIcon className="w-10 h-10 text-blue-gray ml-4" />
+								<label
+									htmlFor={123}
+									className="ml-[-1rem] py-2 flex items-center w-full cursor-pointer"
+								>
+									<ListItemPrefix className="mr-4"></ListItemPrefix>
+									<div className="ml-3">
+										<Select label="Select Doctor to Add" className="w-80"
+                                 onChange={(e) => {
+                                    const doctor = doctors.filter((doc) => doc.name === e)[0];
+                                    if (selectedDoctors.includes(doctor)) return;
+                                    setSelectedDoctors([...selectedDoctors, doctor]);
+                                 }}
+                              >
+                                 {doctorsList.map((doctor) => {
+                                    return (
+                                       <Option value={doctor.name}>
+                                          {doctor.name}, {doctor.qualification}
+                                       </Option>
+                                    );
+                                 })}
+										</Select>
+									</div>
+								</label>
+							</div>
 						</List>
 					</div>
 					<div className="text-center pt-4">
-						<Button className="m-auto">
+						<Button className="m-auto" onClick={sendAddDoctorsApiCall}>
 							<Typography variant="small" color="white">
 								Submit
 							</Typography>
