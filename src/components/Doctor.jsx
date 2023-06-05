@@ -215,8 +215,8 @@ function Doctor({ setModal }) {
 					<Typography variant="h5" color="black" className="text-left">
 						Doctors
 					</Typography>
-					<hr className="mt-1 border-gray-500 w-[100%] m-[auto]" />
-					<div className="flex flex-col items-start gap-0 mt-2">
+					<hr className="mt-1 mb-4 border-gray-500 w-[100%]" />
+					<div className="flex flex-col items-start gap-0 mt-0">
 						{data.map((doctor) => (
 							<div key={doctor.name} className="flex items-center gap-1 pl-1 py-2">
 								<UserIcon className="h-6 w-6 text-gray-900" />

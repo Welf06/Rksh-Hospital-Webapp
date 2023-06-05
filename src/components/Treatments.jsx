@@ -183,7 +183,7 @@ function Doctor({ setModal }) {
             <div className="overflow-hidden border-background border-solid border-2 rounded-2xl p-1 mx-14 mb-4">
 				<Card className="max-h-80 overflow-auto px-7 py-4">
 					<Typography variant="h5" color="black" className="text-left">
-						Tests
+						Treatments
 					</Typography>
 					<hr className="mt-1 border-gray-500 w-[100%] m-[auto]" />
 					<div className="flex flex-col items-start gap-0 mt-2">

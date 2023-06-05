@@ -126,7 +126,7 @@ function Doctor({ setModal }) {
 							Add Tests
 						</Typography>
 					</div>
-					<hr className="mt-[-2rem] border-gray-300 w-[90%] m-[auto]" />
+					<hr className="mt-[-2rem] border-gray-300 w-[90%]" />
 					<form className="px-4">
 						<div className="flex items-center gap-2 px-9 py-4 pt-10">
 							<BeakerIcon className="h-6 w-6 text-gray-900" />
