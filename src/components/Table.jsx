@@ -74,7 +74,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function Table({ setTestModal, setDoctorModal }) {
+function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 	const [data, setData] = useState([]);
 	const [curData, setCurData] = useState([]);
 	const [filter, setFilter] = useState("");
@@ -135,7 +135,7 @@ function Table({ setTestModal, setDoctorModal }) {
 				// Handle the error here
 			}
 		};
-      
+
 	const handleSearch = (e) => {
 		if (e.target.value !== "") {
 			const newData = curData.filter((row) => {
@@ -445,7 +445,9 @@ function Table({ setTestModal, setDoctorModal }) {
 											</div>
 										</td>
 										<td className={classes}>
-											<Button>Discharge</Button>
+											<Button
+                                 onClick={() => {setDischargeModal(true)}}
+                                 >Discharge</Button>
 										</td>
 									</tr>
 								);

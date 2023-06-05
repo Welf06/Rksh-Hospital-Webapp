@@ -141,6 +141,104 @@ function TestsModal({ setTestModal, sampleData }) {
 		}
 	};
 
+	const sendAddTestsTreatmentsApiCall = async () => {
+		setLoading(true);
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addCaseTestsTreatmentsDoctors/`;
+      const Tests = selectedTests.map((test) => {
+			return test.test.name;
+		});
+		const Treatments = selectedTreatments.map((treatment) => {
+			return treatment.treatment.name;
+		});
+		console.log(Tests);
+		console.log(Treatments);
+		const data = {
+			hospital: {
+				email: "info@cityhospital.com",
+				password: "mypassword123",
+			},
+			name: detail.name,
+			caseTests: Tests,
+			caseTreatments: Treatments,
+			caseDoctors: [],
+		};
+
+		const headers = { "Content-Type": "application/json" };
+
+		try {
+			const response = await axios.post(url, JSON.stringify(data), {
+				headers,
+			});
+			console.log(response.data);
+			const remove = await sendRemoveTestsTreatmentsApiCall();
+			toast.success("Tests and Treatments Edited successfully", toastOptions);
+			setLoading(false);
+			// Handle the response data here
+		}
+		catch (error) {
+			console.error(error);
+			toast.error(error.response.data.detail, toastOptions);
+			setLoading(false);
+			// Handle the error here
+		}
+	};
+	const sendRemoveTestsTreatmentsApiCall = async () => {
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/removeCaseTestsTreatmentsDoctors/`;
+      const CurrentTests = selectedTests.map((test) => {
+			return test.test.name;
+		});
+
+		const AllTests = tests.map((test) => {
+			return test.name;
+		});
+
+		const RemovedTests = AllTests.filter((test) => {
+			return !CurrentTests.includes(test);
+		});
+
+		console.log("Removed Tests: ", RemovedTests)
+
+		const CurrentTreatments = selectedTreatments.map((treatment) => {
+			return treatment.treatment.name;
+		});
+
+		const AllTreatments = treatments.map((treatment) => {
+			return treatment.name;
+		});
+
+		const RemovedTreatments = AllTreatments.filter((treatment) => {
+			return !CurrentTreatments.includes(treatment);
+		});
+
+		console.log("Removed Treatments: ", RemovedTreatments)
+
+		const data = {
+			hospital: {
+				email: "info@cityhospital.com",
+				password: "mypassword123",
+			},
+			name: detail.name,
+			caseTests: RemovedTests,
+			caseTreatments: RemovedTreatments,
+			caseDoctors: [],
+		};
+
+		const headers = { "Content-Type": "application/json" };
+
+		try {
+			const response = await axios.post(url, JSON.stringify(data), {
+				headers,
+			});
+			console.log("Remove Tests and Treatments Response: ",response.data);
+			// Handle the response data here
+		}
+		catch (error) {
+			console.error(error);
+			toast.error(error.response.data.detail, toastOptions);
+			setLoading(false);
+			// Handle the error here
+		}
+	};
 	return (
 		<>
 			<ToastContainer
@@ -312,9 +410,9 @@ function TestsModal({ setTestModal, sampleData }) {
 						</div>
 					</div>
 					<div className="text-center pt-4">
-						<Button className="m-auto">
+						<Button className="m-auto" onClick={sendAddTestsTreatmentsApiCall} disabled={loading}>
 							<Typography variant="small" color="white">
-								Submit
+								Edit
 							</Typography>
 						</Button>
 					</div>

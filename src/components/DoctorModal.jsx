@@ -9,6 +9,8 @@ import {
 	List,
 } from "@material-tailwind/react";
 
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -28,8 +30,8 @@ const toastOptions = {
 };
 
 function DoctorModal({ setDoctorModal, sampleData }) {
-   const [doctors, setDoctors] = useState([]);
-   const [selectedDoctors, setSelectedDoctors] = useState([]);
+	const [doctors, setDoctors] = useState([]);
+	const [selectedDoctors, setSelectedDoctors] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const { detail, setDetail } = useContext(DetailContext);
@@ -43,7 +45,6 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 	useEffect(() => {
 		console.log(selectedDoctors);
 	}, [selectedDoctors]);
-
 
 	const sendDocoterApiCall = async () => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getDoctors/`;
@@ -90,6 +91,20 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 		}
 	};
 
+	const sendAddTestsTreatmentsApiCall = async () => {
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addCaseTestsTreatmentsDoctors/`;
+		const data = {
+			hospital: {
+				email: "info@cityhospital.com",
+				password: "mypassword123",
+			},
+			name: "xyz",
+			caseTests: ["TestName"],
+			caseTreatments: ["TreatmentName"],
+			caseDoctors: ["DoctorName"],
+		};
+	};
+
 	return (
 		<>
 			<ToastContainer
@@ -124,41 +139,45 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 						</Typography>
 						<div>
 							<Typography variant="small" color="black" className="">
-								{detail.age} | {detail.gender} | {detail.bloodGroup ? detail.bloodGroup : "A+ve"}{" "}
-								| {detail.consciousness ? "Concious" : "Unconscious"}
+								{detail.age} | {detail.gender} |{" "}
+								{detail.bloodGroup ? detail.bloodGroup : "A+ve"} |{" "}
+								{detail.consciousness ? "Concious" : "Unconscious"}
 							</Typography>
 						</div>
 					</div>
 					<div className="px-4">
 						<Typography variant="h5" color="black" className="p-5">
-                  Assigned Doctors
+							Assigned Doctors
 						</Typography>
 						<hr className="mt-[-1rem] border-gray-300 w-[95%] m-[auto]" />
 						<List>
-							{doctors.map(({ email, hospital, id, name, phone, qualification, specialization }) => {
+							{selectedDoctors.map(({ doctor, hospitalcase, id }, index) => {
+								{
+									console.log(doctor);
+								}
 								return (
 									<ListItem key={id} className="p-0">
+										<UserCircleIcon className="w-10 h-10 text-blue-gray ml-4" />
 										<label
 											htmlFor={id}
-											className="px-3 py-2 flex items-center w-full cursor-pointer"
+											className="ml-[-1rem] py-2 flex items-center w-full cursor-pointer"
 										>
-											<ListItemPrefix className="mr-3">
-											</ListItemPrefix>
-                                 <div>
-											<Typography
-												color="blue-gray"
-												className="font-medium pl-4"
-											>
-												{name}, {qualification}
-											</Typography>
-                                 <Typography
-                                    color="blue-gray"
-                                    className="pl-4"
-                                    variant="small"
-                                 >
-                                    {specialization}
-                                 </Typography>
-                                 </div>
+											<ListItemPrefix className="mr-3"></ListItemPrefix>
+											<div>
+												<Typography
+													color="blue-gray"
+													className="font-medium pl-4"
+												>
+													{doctor.name}, {doctor.qualification}
+												</Typography>
+												<Typography
+													color="blue-gray"
+													className="pl-4"
+													variant="small"
+												>
+													{doctor.specialization}
+												</Typography>
+											</div>
 										</label>
 									</ListItem>
 								);

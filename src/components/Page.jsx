@@ -6,9 +6,6 @@ import Doctors from './Doctor'
 import Tests from './Tests'
 import Treatments from './Treatments'
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 function Page({page, modal, setModal}) {
   return (
    <>
