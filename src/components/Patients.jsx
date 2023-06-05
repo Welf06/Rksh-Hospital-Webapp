@@ -5,7 +5,9 @@ import {
 	MagnifyingGlassIcon,
 	ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
+import axios from "axios";
 import { UsersIcon, BeakerIcon } from "@heroicons/react/24/solid";
 import {
 	Card,
@@ -19,11 +21,15 @@ import {
 	Tabs,
 	TabsHeader,
 	Tab,
+	IconButton,
 	Checkbox,
 	ListItemPrefix,
 	ListItem,
 	List,
 } from "@material-tailwind/react";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TABS = [
 	{
@@ -45,7 +51,8 @@ const TABS = [
 ];
 
 const TABLE_HEAD = [
-	{ label: "Patient Data", value: "patientData" },
+	{label: "Bed No.", value: "bedNo"},
+	{ label: "Patient Name", value: "patientData" },
 	{ label: "Accident Details", value: "accidentDetails" },
 	{ label: "Guardian Details", value: "guardianDetails" },
 	{ label: "Ward Details", value: "wardDetails" },
@@ -53,104 +60,91 @@ const TABLE_HEAD = [
 	{ label: "Discharge", value: "discharge" },
 ];
 
-const TABLE_ROWS = [
-	{
-		patientData: {
-			name: "Mary Smith",
-			age: 25,
-			gender: "F",
-			bloodGroup: "A-ve",
-			consciousness: "Unconscious",
-		},
-		accidentDetails: {
-			type: "Fall",
-			location: "Home",
-		},
-		guardianDetails: {
-			guardianName: "Jane Doe",
-			approval: "Pending",
-			volunteer: "",
-		},
-		wardDetails: "GW",
-		medicalProcedures: "X-ray, CT scan",
-	},
-	{
-		patientData: {
-			name: "Peter Jones",
-			age: 65,
-			gender: "M",
-			bloodGroup: "O+ve",
-			consciousness: "Conscious",
-		},
-		accidentDetails: {
-			type: "Heart Attack",
-			location: "Home",
-		},
-		guardianDetails: {
-			guardianName: "Susan Jones",
-			approval: "Approved",
-			volunteer: "John Doe",
-		},
-		wardDetails: "ICU",
-		medicalProcedures: "Angiogram, Stent",
-	},
-	{
-		patientData: {
-			name: "Sarah Williams",
-			age: 17,
-			gender: "F",
-			bloodGroup: "AB-ve",
-			consciousness: "Unconscious",
-		},
-		accidentDetails: {
-			type: "Car Accident",
-			location: "Highway 101",
-		},
-		guardianDetails: {
-			guardianName: "David Williams",
-			approval: "Pending",
-			volunteer: "",
-		},
-		wardDetails: "GW",
-		medicalProcedures: "X-ray, CT scan, Surgery",
-	},
-	{
-		patientData: {
-			name: "Michael Brown",
-			age: 45,
-			gender: "M",
-			bloodGroup: "A+ve",
-			consciousness: "Conscious",
-		},
-		accidentDetails: {
-			type: "Stroke",
-			location: "Work",
-		},
-		guardianDetails: {
-			guardianName: "Linda Brown",
-			approval: "Approved",
-			volunteer: "Mary Smith",
-		},
-		wardDetails: "EW",
-		medicalProcedures: "Medication, Physical Therapy",
-	},
-];
+const toastOptions = {
+	position: "top-center",
+	autoClose: 1000,
+	hideProgressBar: true,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "light",
+};
+
 function Table({ setTestModal, setDoctorModal }) {
-	const [data, setData] = useState(TABLE_ROWS);
-	const [filerData, setFilterData] = useState(TABLE_ROWS);
+	const [data, setData] = useState([]);
+	const [curData, setCurData] = useState([]);
+	const [filter, setFilter] = useState("");
+	const [active, setActive] = React.useState(1);
+	const [totalPages, setTotalPages] = React.useState(10);
+
+	const getItemProps = (index) => ({
+		variant: active === index ? "filled" : "text",
+		color: active === index ? "blue" : "blue-gray",
+		onClick: () => setActive(index),
+	});
+
+	const next = () => {
+		if (active === 5) return;
+
+		setActive(active + 1);
+	};
+
+	const prev = () => {
+		if (active === 1) return;
+
+		setActive(active - 1);
+	};
+
+	useEffect(() => {
+		const sendApiCall = async () => {
+			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCases/`;
+			// const url = 'http://127.0.0.1:8000/hospital/getCases/';
+
+			const data = {
+				email: "info@cityhospital.com",
+				password: "mypassword123",
+			};
+
+			const headers = { "Content-Type": "application/json" };
+			console.log(data);
+			try {
+				const response = await axios.post(url, JSON.stringify(data), {
+					headers,
+				});
+				console.log(response.data.cases);
+				setData(response.data.cases);
+				setCurData(response.data.cases.slice(0, 10));
+				// Handle the response data here
+			} catch (error) {
+				console.error(error);
+				toast.error(error.response.data.detail, toastOptions);
+				// Handle the error here
+			}
+		};
+
+		sendApiCall();
+	}, []);
+
+	useEffect(() => {
+		setTotalPages(Math.ceil(data.length / 10));
+		console.log(data);
+	}, [data]);
 
 	const handleSearch = (e) => {
 		if (e.target.value !== "") {
-			const newData = filerData.filter((row) => {
-				return row.patientData.name
-					.toLowerCase()
-					.includes(e.target.value.toLowerCase());
+			const newData = curData.filter((row) => {
+				return row.name.toLowerCase().includes(e.target.value.toLowerCase());
 			});
-			setData(newData);
+			setCurData(newData);
 		} else {
-			setData(filerData);
+			const newData = data.filter((row) => {
+				return row.ward.toLowerCase().includes(filter.toLowerCase());
+			});
+			setCurData(newData);
 		}
 	};
+
 	return (
 		<Card className="h-full w-full px-14">
 			<CardHeader floated={false} shadow={false} className="rounded-none">
@@ -163,17 +157,18 @@ function Table({ setTestModal, setDoctorModal }) {
 									value={value}
 									onClick={() => {
 										if (value === "all") {
-											setData(TABLE_ROWS);
+											setFilter("all");
+											setCurData(data);
 											return;
 										}
 
-										const newData = TABLE_ROWS.filter((row) => {
-											return row.wardDetails
+										const newData = data.filter((row) => {
+											return row.ward
 												.toLowerCase()
 												.includes(value.toLowerCase());
 										});
-										setData(newData);
-										setFilterData(newData);
+										setFilter(value);
+										setCurData(newData);
 									}}
 								>
 									&nbsp;&nbsp;{label}&nbsp;&nbsp;
@@ -201,14 +196,18 @@ function Table({ setTestModal, setDoctorModal }) {
 									onClick={() => {
 										const newData = [...data];
 										newData.sort((a, b) => {
+											console.log(a.name, b.name)
 											let value1, value2;
 											if (value === "patientData") {
-												value1 = a[value].name;
-												value2 = b[value].name;
+												value1 = a.name;
+												value2 = b.name;
 											} else if (value === "accidentDetails") {
-												value1 = a[value].type;
-												value2 = b[value].type;
-											}
+												value1 = a.emergencyType;
+												value2 = b.emergencyType;
+											} else if (value === "bedNo") {
+												value1 = a.bed;
+												value2 = b.bed;
+											} 
 
 											if (value1 < value2) {
 												return -1;
@@ -218,7 +217,7 @@ function Table({ setTestModal, setDoctorModal }) {
 											}
 											return 0;
 										});
-										setData(newData);
+										setCurData(newData);
 									}}
 								>
 									<Typography
@@ -228,7 +227,7 @@ function Table({ setTestModal, setDoctorModal }) {
 									>
 										{label}{" "}
 										{(value === "patientData" ||
-											value === "accidentDetails") && (
+											value === "accidentDetails" || value==="bedNo") && (
 											<ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
 										)}
 									</Typography>
@@ -237,14 +236,23 @@ function Table({ setTestModal, setDoctorModal }) {
 						</tr>
 					</thead>
 					<tbody>
-						{data.map(
+						{curData.map(
 							(
 								{
-									patientData: { name, age, gender, bloodGroup, consciousness },
-									accidentDetails: { type, location },
-									guardianDetails: { guardianName, approval, volunteer },
-									wardDetails,
-									medicalProcedures,
+									accidentLocation,
+									accidentTime,
+									age,
+									bed,
+									emergencyType,
+									gender,
+									guardianApproval,
+									guardianName,
+									hospital,
+									id,
+									name,
+									status,
+									volunteer,
+									ward,
 								},
 								index
 							) => {
@@ -255,6 +263,20 @@ function Table({ setTestModal, setDoctorModal }) {
 
 								return (
 									<tr key={name}>
+									<td className={classes}>
+											<div className="flex items-center gap-3">
+												{/* <Avatar src={img} alt={name} size="sm" /> */}
+												<div className="flex flex-col">
+													<Typography
+														variant="lead"
+														color="blue-gray"
+														className="font-normal"
+													>
+														{bed}
+													</Typography>
+												</div>
+											</div>
+										</td>
 										<td className={classes}>
 											<div className="flex items-center gap-3">
 												{/* <Avatar src={img} alt={name} size="sm" /> */}
@@ -271,7 +293,7 @@ function Table({ setTestModal, setDoctorModal }) {
 														color="blue-gray"
 														className="font-normal opacity-70"
 													>
-														{`${age} | ${gender} | ${bloodGroup} | ${consciousness}`}
+														{`${age} | ${gender} | ${"A+ve"} | ${"conscious"}`}
 													</Typography>
 												</div>
 											</div>
@@ -283,14 +305,14 @@ function Table({ setTestModal, setDoctorModal }) {
 													color="blue-gray"
 													className="font-normal"
 												>
-													{type}
+													{emergencyType}
 												</Typography>
 												<Typography
 													variant="small"
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{location}
+													{accidentLocation}
 												</Typography>
 											</div>
 										</td>
@@ -308,7 +330,7 @@ function Table({ setTestModal, setDoctorModal }) {
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{approval}
+													{guardianApproval}
 												</Typography>
 												<Typography
 													variant="small"
@@ -329,19 +351,17 @@ function Table({ setTestModal, setDoctorModal }) {
 												/> */}
 												<Chip
 													value="EW"
-													variant={wardDetails === "EW" ? "filled" : "outlined"}
+													variant={ward === "EW" ? "filled" : "outlined"}
 													color="blue"
 												/>
 												<Chip
 													value="ICU"
-													variant={
-														wardDetails === "ICU" ? "filled" : "outlined"
-													}
+													variant={ward === "ICU" ? "filled" : "outlined"}
 													color="blue"
 												/>
 												<Chip
 													value="GW"
-													variant={wardDetails === "GW" ? "filled" : "outlined"}
+													variant={ward === "GW" ? "filled" : "outlined"}
 													color="blue"
 												/>
 											</div>
@@ -403,12 +423,33 @@ function Table({ setTestModal, setDoctorModal }) {
 				<Typography variant="small" color="blue-gray" className="font-normal">
 					Page 1 of 10
 				</Typography>
-				<div className="flex gap-2">
-					<Button variant="outlined" color="blue-gray" size="sm">
-						Previous
+				<div className="flex items-center gap-4">
+					<Button
+						variant="text"
+						color="blue-gray"
+						className="flex items-center gap-2"
+						onClick={prev}
+						disabled={active === 1}
+					>
+						<ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
 					</Button>
-					<Button variant="outlined" color="blue-gray" size="sm">
+					<div className="flex items-center gap-2">
+						{Array.from(Array(totalPages)).map((page, index) => {
+							console.log(page, index);
+							<IconButton key={index} {...getItemProps(index)}>
+								{index}
+							</IconButton>;
+						})}
+					</div>
+					<Button
+						variant="text"
+						color="blue-gray"
+						className="flex items-center gap-2"
+						onClick={next}
+						disabled={active === 5}
+					>
 						Next
+						<ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
 					</Button>
 				</div>
 			</CardFooter>
@@ -431,8 +472,22 @@ function Patients() {
 	const [doctorModal, setDoctorModal] = useState(false);
 	return (
 		<>
+			<ToastContainer
+				position="top-center"
+				autoClose={1000}
+				hideProgressBar
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
 			<div className="overflow-hidden">
-				{testModal && <TestsModal setTestModal={setTestModal} sampleData={sampleData}/>}
+				{testModal && (
+					<TestsModal setTestModal={setTestModal} sampleData={sampleData} />
+				)}
 				{/* {doctorModal && <DoctorModal setDoctorModal={setDoctorModal} />} */}
 				<Typography variant="h3" color="black" className="ml-32 mt-7">
 					Emergency Ward Patients Record

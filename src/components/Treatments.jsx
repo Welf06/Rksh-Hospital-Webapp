@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { MuiTelInput } from "mui-tel-input";
-
 import {
 	Card,
 	Typography,
 	Button,
 	Input,
-	Checkbox,
-	ListItemPrefix,
-	ListItem,
-	List,
 } from "@material-tailwind/react";
 
 import {
@@ -51,8 +45,8 @@ function Doctor({ setModal }) {
 	const sendApiCall = async () => {
 			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getTreatments/`;
 			const data = {
-				email: " test@gmail.com",
-				password: " abc123",
+				email: "info@cityhospital.com",
+				password: "mypassword123",
 			};
 			const headers = { "Content-Type": "application/json" };
 			console.log(data);
@@ -79,8 +73,8 @@ function Doctor({ setModal }) {
 			`${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addTreatment/`;
 		const data = {
 			hospital: {
-				email: " test@gmail.com",
-				password: " abc123",
+				email: "info@cityhospital.com",
+				password: "mypassword123",
 			},
 			name: name,
 			price: price,
@@ -123,7 +117,7 @@ function Doctor({ setModal }) {
 				theme="light"
 			/>
 			<div
-				className="bg-black opacity-25 absolute top-14 left-0 h-[110vh] w-[100%] z-20 overflow-hidden"
+				className="bg-black opacity-25 absolute top-14 left-0 h-[120vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {
 					setModal("none");
 				}}

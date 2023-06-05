@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { MuiTelInput } from "mui-tel-input";
-
 import {
 	Card,
 	Typography,
 	Button,
 	Input,
-	Checkbox,
-	ListItemPrefix,
-	ListItem,
-	List,
 } from "@material-tailwind/react";
 
 import {
@@ -55,8 +49,8 @@ function Doctor({ setModal }) {
 	const sendApiCall = async () => {
 			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getDoctors/`;
 			const data = {
-				email: " test@gmail.com",
-				password: " abc123",
+				email: "info@cityhospital.com",
+				password: "mypassword123",
 			};
 			const headers = { "Content-Type": "application/json" };
 			console.log(data);
@@ -89,8 +83,8 @@ function Doctor({ setModal }) {
 			`${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addDoctor/`;
 		const data = {
 			hospital: {
-				email: " test@gmail.com",
-				password: " abc123",
+				email: "info@cityhospital.com",
+				password: "mypassword123",
 			},
 			name: name,
 			specialization: specialization,
@@ -133,7 +127,7 @@ function Doctor({ setModal }) {
 				theme="light"
 			/>
 			<div
-				className="bg-black opacity-25 absolute top-14 left-0 h-[120vh] w-[100%] z-20 overflow-hidden"
+				className="bg-black opacity-25 absolute top-14 left-0 h-[125vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {
 					setModal("none");
 				}}
@@ -224,7 +218,7 @@ function Doctor({ setModal }) {
 					<hr className="mt-1 border-gray-500 w-[100%] m-[auto]" />
 					<div className="flex flex-col items-start gap-0 mt-2">
 						{data.map((doctor) => (
-							<div className="flex items-center gap-1 pl-1 py-2">
+							<div key={doctor.name} className="flex items-center gap-1 pl-1 py-2">
 								<UserIcon className="h-6 w-6 text-gray-900" />
 								<Typography variant="text" color="black">
 									{`${doctor.name}, ${doctor.qualification}: ${doctor.specialization}`}

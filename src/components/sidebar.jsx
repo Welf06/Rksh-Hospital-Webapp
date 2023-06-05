@@ -149,13 +149,13 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 									setModal("treatments");
 									setMenuOpen(false);
 								}}>Treatments</ListItem>
-							<ListItem>Beds</ListItem>
+							{/* <ListItem>Beds</ListItem> */}
 							{/* <ListItem>Ambulances</ListItem> */}
-							<ListItem>Patients</ListItem>
+							{/* <ListItem>Patients</ListItem> */}
 						</List>
 					</AccordionBody>
 				</Accordion>
-				<Accordion
+				{/* <Accordion
 					open={open === 3}
 					icon={
 						<ChevronDownIcon
@@ -190,7 +190,7 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 							<ListItem>Ambulances</ListItem>
 						</List>
 					</AccordionBody>
-				</Accordion>
+				</Accordion> */}
 			</List>
 		</Card>
 	);

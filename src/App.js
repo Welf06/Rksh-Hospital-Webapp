@@ -7,8 +7,8 @@ import Page from './components/Page'
 import './styles/App.css'
 
 export default function App() {
-  const [page, setPage] = useState('completed');
-  const [modal, setModal] = useState('doctors');
+  const [page, setPage] = useState('patients');
+  const [modal, setModal] = useState('');
   return (
     <div className="App">
       <Navbar />

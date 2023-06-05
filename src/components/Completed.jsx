@@ -2,17 +2,7 @@ import React, { useEffect, useState } from "react";
 import "axios";
 
 import {
-	Card,
-	CardHeader,
-	Input,
 	Typography,
-	Button,
-	CardBody,
-	Chip,
-	CardFooter,
-	Tabs,
-	TabsHeader,
-	Tab,
 } from "@material-tailwind/react";
 
 import MUIDataTable from "mui-datatables";
@@ -51,21 +41,22 @@ function Completed() {
 
 	useEffect(() => {
 		const sendApiCall = async () => {
-			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getDoctors/`;
+			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCompletedCases/`;
 			// const url = 'http://127.0.0.1:8000/hospital/getCases/';
 
 			const data = {
-				email: " test@gmail.com",
-				password: " abc123",
+				email: "info@cityhospital.com",
+				password: "mypassword123",
 			};
-         
-         const headers = { "Content-Type": "application/json" };
-         console.log(data);
+
+			const headers = { "Content-Type": "application/json" };
+			console.log(data);
 			try {
 				const response = await axios.post(url, JSON.stringify(data), {
-				headers,
-			});
-				console.log(response.data);
+					headers,
+				});
+				console.log(response.data.completedCases);
+				setData(response.data.completedCases);
 				// Handle the response data here
 			} catch (error) {
 				console.error(error);
@@ -78,6 +69,14 @@ function Completed() {
 	}, []);
 
 	const columns = [
+      {
+			name: "id",
+			label: "ID",
+			options: {
+				filter: true,
+				sort: true,
+			},
+		},
 		{
 			name: "name",
 			label: "Name",
@@ -87,40 +86,40 @@ function Completed() {
 			},
 		},
 		{
-			name: "phone",
-			label: "Phone",
+			name: "age",
+			label: "Age",
 			options: {
 				filter: true,
 				sort: true,
 			},
 		},
 		{
-			name: "amount",
-			label: "Amount",
+			name: "gender",
+			label: "Gender",
 			options: {
 				filter: true,
 				sort: true,
 			},
 		},
 		{
-			name: "datetime",
-			label: "Date/Time",
+			name: "ward",
+			label: "Ward",
 			options: {
 				filter: true,
 				sort: true,
 			},
 		},
 		{
-			name: "orgName",
-			label: "Organization Name",
+			name: "emergencyType",
+			label: "Type",
 			options: {
 				filter: true,
 				sort: true,
 			},
 		},
 		{
-			name: "location",
-			label: "Location",
+			name: "dod",
+			label: "Date of Discharge",
 			options: {
 				filter: true,
 				sort: true,
@@ -182,7 +181,7 @@ function Completed() {
 			<div className="mx-16 my-4">
 				<MUIDataTable
 					className="mt-8"
-					data={tableData}
+					data={data}
 					columns={columns}
 					options={options}
 				/>
