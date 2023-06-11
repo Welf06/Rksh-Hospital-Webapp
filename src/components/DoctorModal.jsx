@@ -11,7 +11,7 @@ import {
 	Option,
 } from "@material-tailwind/react";
 
-import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { UserCircleIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 import axios from "axios";
 
@@ -134,7 +134,7 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 		}
 	};
 
-   const sendRemoveTestsTreatmentsApiCall = async (doctorName) => {
+   const sendRemoveDoctorsApiCall = async (doctorName) => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/removeCaseTestsTreatmentsDoctors/`;
 
 		console.log("Removed Doctors: ", doctorName)
@@ -150,6 +150,8 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 			caseDoctors: [doctorName],
 		};
 
+      console.log(data)
+      
 		const headers = { "Content-Type": "application/json" };
 
 		try {
@@ -214,7 +216,6 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 						<hr className="mt-[-1rem] border-gray-300 w-[95%] m-[auto]" />
 						<List>
 							{selectedDoctors.map(({id, name, hospital, email, phone, qualification, specialization}, index) => {
-                        {console.log(id, name, hospital, email, phone, qualification, specialization, index)}
 								return (
 									<ListItem key={name} className="p-0">
 										<UserCircleIcon className="w-10 h-10 text-blue-gray ml-4" />
@@ -238,6 +239,11 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 													{specialization}
 												</Typography>
 											</div>
+                                 <TrashIcon className="w-6 h-6 ml-auto mr-4 text-blue-gray cursor-pointer" onClick={() => {
+                                    // console.log("Remove Doctor: ", name);
+                                    sendRemoveDoctorsApiCall(name);
+                                    setSelectedDoctors(selectedDoctors.filter((doctor) => doctor.name !== name));
+                                 }} />
 										</label>
 									</ListItem>
 								);
@@ -271,7 +277,7 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 						</List>
 					</div>
 					<div className="text-center pt-4">
-						<Button className="m-auto" onClick={sendAddDoctorsApiCall}>
+						<Button className="m-auto" onClick={sendAddDoctorsApiCall} disabled={loading}>
 							<Typography variant="small" color="white">
 								Submit
 							</Typography>

@@ -47,7 +47,7 @@ function TestsModal({ setDischargeModal }) {
 				headers,
 			});
 			console.log(response.data);
-			toast.success("Patient Discharged", toastOptions);
+			toast.success("Patient Discharged, Refresh the Page to see the Changes", toastOptions);
 			setTimeout(() => {
 				setDischargeModal(false);
             setLoading(false);
@@ -101,8 +101,6 @@ function TestsModal({ setDischargeModal }) {
 								Yes
 							</Button>
 							<Button
-								variant="contained"
-								color="primary"
 								className="mx-2 w-40 text-md"
 								onClick={() => {
 									setDischargeModal(false);

@@ -118,7 +118,7 @@ function Completed() {
 			},
 		},
 		{
-			name: "dod",
+			name: "dateofdischarge",
 			label: "Date of Discharge",
 			options: {
 				filter: true,
@@ -127,40 +127,6 @@ function Completed() {
 		},
 	];
 
-	const tableData = [
-		{
-			name: "Ganesh",
-			phone: "9876543210",
-			amount: "1000",
-			datetime: "12/12/2021 12:00",
-			orgName: "St. John's Hospital",
-			location: "Koramangla",
-		},
-		{
-			name: "Ganesh",
-			phone: "9876543210",
-			amount: "1000",
-			datetime: "12/12/2021 12:00",
-			orgName: "St. John's Hospital",
-			location: "Koramangla",
-		},
-		{
-			name: "Ganesh",
-			phone: "9876543210",
-			amount: "1000",
-			datetime: "12/12/2021 12:00",
-			orgName: "St. John's Hospital",
-			location: "Koramangla",
-		},
-		{
-			name: "Ganesh",
-			phone: "9876543210",
-			amount: "1000",
-			datetime: "12/12/2021 12:00",
-			orgName: "St. John's Hospital",
-			location: "Koramangla",
-		},
-	];
 	return (
 		<div>
 			<ToastContainer
