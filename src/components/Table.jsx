@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import {
-	MagnifyingGlassIcon,
-	ChevronUpDownIcon,
-} from "@heroicons/react/24/outline";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import axios from "axios";
 import { UsersIcon, BeakerIcon } from "@heroicons/react/24/solid";
+import {
+	MagnifyingGlassIcon,
+	ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
 import {
 	Card,
 	CardHeader,
@@ -26,6 +26,7 @@ import {
 import { toast } from "react-toastify";
 
 import { DetailContext } from "../App";
+import { LoginDetailsContext } from "../App";
 
 const TABS = [
 	{
@@ -75,6 +76,7 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 	const [totalPages, setTotalPages] = React.useState(10);
 
 	const { detail, setDetail } = useContext(DetailContext);
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
 	const getItemProps = (index) => ({
 		variant: active === index ? "filled" : "text",
@@ -108,8 +110,8 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 			// const url = 'http://127.0.0.1:8000/hospital/getCases/';
 
 			const data = {
-				email: "info@cityhospital.com",
-				password: "mypassword123",
+				email: loginDetails.email,
+				password: loginDetails.password,
 			};
 
 			const headers = { "Content-Type": "application/json" };

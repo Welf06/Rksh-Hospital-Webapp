@@ -11,15 +11,27 @@ import './styles/App.css'
 
 
 export const DetailContext = createContext();
+// Testing Details:
+// const detail = {
+//   email: info@cityhospital.com
+//   password: mypassword123
+
+export const LoginDetailsContext = createContext();
 
 export default function App() {
   const [detail, setDetail] = useState('');
   const [page, setPage] = useState('patients');
   const [modal, setModal] = useState('');
   const [login, setLogin] = useState(false);
+  const [loginDetails, setLoginDetails] = useState({});
 
   useEffect(() => {
-    if (localStorage.getItem('login')) {
+
+    if (localStorage.getItem('email') && localStorage.getItem('password')) {
+      setLoginDetails({
+        email: localStorage.getItem('email'),
+        password: localStorage.getItem('password')
+      });
       setLogin('true');
     }
     else {
@@ -29,6 +41,7 @@ export default function App() {
 
   return (
     <div className="App">
+    <LoginDetailsContext.Provider value={{ loginDetails, setLoginDetails }}>
       <ToastContainer
         position="top-center"
         autoClose={1000}
@@ -44,12 +57,14 @@ export default function App() {
       {login === '' && <div className="loader"></div>}
       {login === 'false'&& <Login setLogin={setLogin} />}
       {login === 'true' && (
+
         <DetailContext.Provider value={{ detail, setDetail }}>
           <Navbar />
           <Sidebar setPage={setPage} setModal={setModal} />
           <Page page={page} modal={modal} setModal={setModal} />
         </DetailContext.Provider>
       )}
+      </LoginDetailsContext.Provider>
     </div>
   );
 }

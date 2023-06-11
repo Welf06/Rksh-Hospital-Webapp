@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 
 import {
 	Card,
@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 
 import { toast } from "react-toastify";
+import { LoginDetailsContext } from "../App";
 
 import axios from "axios";
 
@@ -28,6 +29,8 @@ function Login({ setLogin }) {
 	const nameInputElement = useRef();
 	const emailInputElement = useRef();
 	const passwordInputElement = useRef();
+
+   const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
 	function handleLogin() {
 		setLoading(true);
@@ -71,6 +74,14 @@ function Login({ setLogin }) {
             localStorage.setItem("login", true);
 
 				toast.success("Login successful", toastOptions);
+            setLoginDetails({
+               email: emailInputElement.current?.value,
+               password: passwordInputElement.current?.value,
+            });
+            
+            localStorage.setItem("email", emailInputElement.current?.value);
+            localStorage.setItem("password", passwordInputElement.current?.value);
+
 				setTimeout(() => {
 					setLogin('true');
 					setLoading(false);

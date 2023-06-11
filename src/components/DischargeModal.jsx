@@ -11,6 +11,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import { DetailContext } from "../App";
+import { LoginDetailsContext } from "../App";
 
 const toastOptions = {
 	position: "top-center",
@@ -26,13 +27,17 @@ const toastOptions = {
 function TestsModal({ setDischargeModal }) {
    const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
 
 	const dischargePatient = async () => {
       setLoading(true);
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/dischargeCase/`;
 		const data = {
-			hospital: { email: "info@cityhospital.com", password: "mypassword123" },
+			hospital: { 
+				email: loginDetails.email,
+				password: loginDetails.password,
+			},
 			name: detail.name,
 		};
 		const headers = { "Content-Type": "application/json" };

@@ -19,6 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { DetailContext } from "../App";
+import { LoginDetailsContext } from "../App";
 
 const toastOptions = {
 	position: "top-center",
@@ -38,6 +39,7 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 	const [loading, setLoading] = useState(false);
 
 	const { detail, setDetail } = useContext(DetailContext);
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
 	useEffect(() => {
 		console.log(detail.name);
@@ -105,8 +107,8 @@ function DoctorModal({ setDoctorModal, sampleData }) {
       console.log(doctor);
 		const data = {
 			hospital: {
-				email: "info@cityhospital.com",
-				password: "mypassword123",
+				email: loginDetails.email,
+				password: loginDetails.password,
 			},
 			name: detail.name,
 			caseTests: [],
@@ -141,8 +143,8 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 
 		const data = {
 			hospital: {
-				email: "info@cityhospital.com",
-				password: "mypassword123",
+				email: loginDetails.email,
+				password: loginDetails.password,
 			},
 			name: detail.name,
 			caseTests: [],

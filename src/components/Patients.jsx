@@ -5,33 +5,10 @@ import DoctorModal from "./DoctorModal";
 import DischargeModal from "./DischargeModal";
 import { Typography } from "@material-tailwind/react";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import { DetailContext } from "../App";
 
 import Table from "./Table";
 
-const toastOptions = {
-	position: "top-center",
-	autoClose: 1000,
-	hideProgressBar: true,
-	closeOnClick: true,
-	pauseOnHover: true,
-	draggable: true,
-	progress: undefined,
-	theme: "light",
-};
 
-const sampleData = {
-	name: "John Doe",
-	age: 25,
-	gender: "M",
-	bloodGroup: "O+",
-	consciousness: "Conscious",
-	tests: ["XRay", "MRI", "CT Scan", "Endoscopy", "Biopsy"],
-	treatments: ["Surgery", "Medication", "Physiotherapy", "Radiation Therapy"],
-};
 
 function Patients() {
 	const [testModal, setTestModal] = useState(false);
@@ -39,24 +16,11 @@ function Patients() {
 	const [dischargeModal, setDischargeModal] = useState(false);
 	return (
 		<>
-			<ToastContainer
-				position="top-center"
-				autoClose={1000}
-				hideProgressBar
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="light"
-			/>
 			<div className="overflow-hidden">
 				{testModal && <TestsModal setTestModal={setTestModal} />}
 				{doctorModal && (
 					<DoctorModal
 						setDoctorModal={setDoctorModal}
-						sampleData={sampleData}
 					/>
 				)}
 				{dischargeModal && (

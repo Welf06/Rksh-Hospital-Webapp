@@ -14,6 +14,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import { DetailContext } from "../App";
+import { LoginDetailsContext } from "../App";
 
 const toastOptions = {
 	position: "top-center",
@@ -34,6 +35,7 @@ function TestsModal({ setTestModal }) {
 	const [loading, setLoading] = useState(false);
 
 	const { detail, setDetail } = useContext(DetailContext);
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
 	useEffect(() => {
 		console.log(detail.name);
@@ -153,8 +155,8 @@ function TestsModal({ setTestModal }) {
 		console.log(Treatments);
 		const data = {
 			hospital: {
-				email: "info@cityhospital.com",
-				password: "mypassword123",
+				email: loginDetails.email,
+				password: loginDetails.password,
 			},
 			name: detail.name,
 			caseTests: Tests,
@@ -213,8 +215,8 @@ function TestsModal({ setTestModal }) {
 
 		const data = {
 			hospital: {
-				email: "info@cityhospital.com",
-				password: "mypassword123",
+				email: loginDetails.email,
+				password: loginDetails.password,
 			},
 			name: detail.name,
 			caseTests: RemovedTests,

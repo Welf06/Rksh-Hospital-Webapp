@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "axios";
 
 import {
@@ -9,6 +9,7 @@ import MUIDataTable from "mui-datatables";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { LoginDetailsContext } from "../App";
 
 const options = {
 	filterType: "checkbox",
@@ -36,14 +37,15 @@ const toastOptions = {
 
 function Completed() {
 	const [data, setData] = useState([]);
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 	// const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const sendApiCall = async () => {
 			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCompletedCases/`;
 			const data = {
-				email: "info@cityhospital.com",
-				password: "mypassword123",
+				email: loginDetails.email,
+				password: loginDetails.password,
 			};
 
 			const headers = { "Content-Type": "application/json" };

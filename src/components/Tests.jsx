@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import {
 	Card,
@@ -18,6 +18,8 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
+import { LoginDetailsContext } from "../App";
+
 const toastOptions = {
 	position: "top-center",
 	autoClose: 1000,
@@ -35,6 +37,8 @@ function Doctor({ setModal }) {
 	const [category, setCategory] = useState("");
 	const [price, setPrice] = useState(0);
 	const [data, setData] = useState([]);
+
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
 	useEffect(() => {
 		sendApiCall();
@@ -69,8 +73,8 @@ function Doctor({ setModal }) {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addTest/`;
 		const data = {
 			hospital: {
-				email: "info@cityhospital.com",
-				password: "mypassword123",
+				email: loginDetails.email,
+				password: loginDetails.password,
 			},
 			name: name,
 			price: price,
