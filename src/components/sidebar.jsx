@@ -24,8 +24,6 @@ import {
 	UserCircleIcon,
 } from "@heroicons/react/24/outline";
 
-import { useOnClickOutside } from "../utils/useClickOutside";
-
 function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 	const [open, setOpen] = useState(0);
 	const handleOpen = (value) => {

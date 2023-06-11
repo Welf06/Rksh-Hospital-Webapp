@@ -1,4 +1,6 @@
 import { useState, createContext, useEffect } from 'react';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 import Sidebar from './components/sidebar';
@@ -18,6 +20,18 @@ export default function App() {
 
   return (
     <div className="App">
+         	 <ToastContainer
+				position="top-center"
+				autoClose={1000}
+				hideProgressBar
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
       <DetailContext.Provider value={{ detail, setDetail }}>
         <Navbar />
         <Sidebar setPage={setPage} setModal={setModal} />

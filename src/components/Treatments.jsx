@@ -16,8 +16,7 @@ import {
 
 import axios from "axios";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const toastOptions = {
 	position: "top-center",
@@ -104,18 +103,7 @@ function Doctor({ setModal }) {
 
 	return (
 		<>
-			<ToastContainer
-				position="top-center"
-				autoClose={1000}
-				hideProgressBar
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="light"
-			/>
+
 			<div
 				className="bg-black opacity-25 absolute top-14 left-0 h-[120vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { messaging } from '../firebase';
-import { getToken, onMessage, onBackgroundMessage } from 'firebase/messaging';
+import { getToken, onMessage } from 'firebase/messaging';
 
 import Patients from './Patients'
 import Completed from './Completed'

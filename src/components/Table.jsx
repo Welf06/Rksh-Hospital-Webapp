@@ -29,8 +29,7 @@ import {
 	List,
 } from "@material-tailwind/react";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 import { DetailContext } from "../App";
 
