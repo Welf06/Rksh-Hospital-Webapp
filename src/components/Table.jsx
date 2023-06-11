@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import TestsModal from "./TestsModal";
-import DoctorModal from "./DoctorModal";
 import {
 	MagnifyingGlassIcon,
 	ChevronUpDownIcon,
@@ -23,10 +21,6 @@ import {
 	TabsHeader,
 	Tab,
 	IconButton,
-	Checkbox,
-	ListItemPrefix,
-	ListItem,
-	List,
 } from "@material-tailwind/react";
 
 import { toast } from "react-toastify";
@@ -471,9 +465,6 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 					</Button>
 					<div className="flex items-center gap-2">
 						{Array.from(Array(totalPages)).map((page, index) => {
-							{
-								/* console.log(page, index); */
-							}
 							<IconButton key={index} {...getItemProps(index)}>
 								{index}
 							</IconButton>;

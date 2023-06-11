@@ -1,12 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import {
 	Typography,
 	Button,
-	Checkbox,
-	ListItemPrefix,
-	ListItem,
-	List,
 } from "@material-tailwind/react";
 
 

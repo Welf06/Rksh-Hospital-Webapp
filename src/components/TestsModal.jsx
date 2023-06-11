@@ -26,7 +26,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function TestsModal({ setTestModal, sampleData }) {
+function TestsModal({ setTestModal }) {
 	const [tests, setTests] = useState([]);
 	const [selectedTests, setSelectedTests] = useState([]);
 	const [treatments, setTreatments] = useState([]);

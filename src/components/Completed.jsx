@@ -36,13 +36,11 @@ const toastOptions = {
 
 function Completed() {
 	const [data, setData] = useState([]);
-	const [loading, setLoading] = useState(true);
+	// const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const sendApiCall = async () => {
 			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCompletedCases/`;
-			// const url = 'http://127.0.0.1:8000/hospital/getCases/';
-
 			const data = {
 				email: "info@cityhospital.com",
 				password: "mypassword123",

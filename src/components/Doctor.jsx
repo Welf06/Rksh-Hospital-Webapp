@@ -32,7 +32,6 @@ const toastOptions = {
 };
 
 function Doctor({ setModal }) {
-	const [value, setValue] = React.useState("");
 	const [name, setName] = useState("");
 	const [specialization, setSpecialization] = useState("");
 	const [phone, setPhone] = useState("");
