@@ -44,19 +44,19 @@ function Login({ setLogin }) {
 			return;
 		}
 
-		// const nameRegex = /^[a-zA-Z ]{2,30}$/;
-		// if (!nameRegex.test(nameInputElement.current?.value)) {
-		//    toast.error("Please enter a valid name", toastOptions);
-		//    setLoading(false);
-		//    return;
-		// }
+		const nameRegex = /^[a-zA-Z ]{2,30}$/;
+		if (!nameRegex.test(nameInputElement.current?.value)) {
+		   toast.error("Please enter a valid name", toastOptions);
+		   setLoading(false);
+		   return;
+		}
 
-		// const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-		// if (!emailRegex.test(emailInputElement.current?.value)) {
-		//    toast.error("Please enter a valid email", toastOptions);
-		//    setLoading(false);
-		//    return;
-		// }
+		const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+		if (!emailRegex.test(emailInputElement.current?.value)) {
+		   toast.error("Please enter a valid email", toastOptions);
+		   setLoading(false);
+		   return;
+		}
 
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/hospitalLogin/`;
 		const data = {
@@ -90,6 +90,7 @@ function Login({ setLogin }) {
 			.catch((error) => {
 				console.error(error);
 				toast.error(error.response.data.detail, toastOptions);
+				setLoading(false);
 			});
 	}
 

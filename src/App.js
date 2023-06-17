@@ -18,6 +18,17 @@ export const DetailContext = createContext();
 
 export const LoginDetailsContext = createContext();
 
+export const toastOptions = {
+	position: "top-center",
+	autoClose: 1000,
+	hideProgressBar: true,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "light",
+};
+
 export default function App() {
   const [detail, setDetail] = useState('');
   const [page, setPage] = useState('patients');
