@@ -95,6 +95,14 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 							>
 								Completed
 							</ListItem>
+							<ListItem
+								onClick={() => {
+									setPage("trips");
+									setMenuOpen(false);
+								}}
+							>
+								Trips
+							</ListItem>
 						</List>
 					</AccordionBody>
 				</Accordion>

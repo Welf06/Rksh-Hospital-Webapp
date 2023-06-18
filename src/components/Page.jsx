@@ -6,6 +6,7 @@ import axios from "axios";
 
 import Patients from "./Patients";
 import Completed from "./Completed";
+import Trips from "./Trips";
 import Doctors from "./Doctor";
 import Tests from "./Tests";
 import Treatments from "./Treatments";
@@ -14,8 +15,11 @@ import NotificationModal from "./NotificationModal";
 import { LoginDetailsContext, toastOptions } from "../App";
 import { toast } from "react-toastify";
 
-function Page({ page, modal, setModal }) {
+function Page({ page, modal, setModal, setPage }) {
 	const [notificationQueue, setNotificationQueue] = useState([]);
+// 	const [notificationQueue, setNotificationQueue] = useState([JSON.parse(
+// "{\"ambulance_license_plate\":\"1234\",\"driver_phone\":\"1234567890\",\"driver_name\":\"Test2_driver\",\"estimated_time_of_arrival\":\"2023-06-18T01:00:00Z\",\"start_location\":\"Kathmandu\",\"start_time\":\"2023-18-06T01:00:00Z\",\"password\":\"mypassword123\",\"video_url\":\"video_url\",\"nature_of_emergency\":\"Accident\",\"name\":\"Test3_patient\",\"location\":\"Kathmandu\",\"id\":2,\"conscious\":\"Y\",\"document_url\":\"document_url\",\"email\":\"info@cityhospital.com\",\"hospital_name\":\"City Hospital\"}"
+// 	)]);
 	const { loginDetails } = useContext(LoginDetailsContext);
 
 	useEffect(() => {
@@ -46,7 +50,6 @@ function Page({ page, modal, setModal }) {
 				},
         registration_id: token,
 			};
-			console.log(data);
 			const headers = { "Content-Type": "application/json" };
 
       axios.post(url, JSON.stringify(data), { headers })
@@ -66,7 +69,7 @@ function Page({ page, modal, setModal }) {
 
 	onMessage(messaging, (payload) => {
 		console.log("Message received. ", payload);
-		setNotificationQueue([...notificationQueue, payload.notification]);
+		setNotificationQueue([JSON.parse(payload.data.trip_details), ...notificationQueue,]);
 		// ...
 	});
 
@@ -76,10 +79,12 @@ function Page({ page, modal, setModal }) {
 				<NotificationModal
 					notificationQueue={notificationQueue}
 					setNotificationQueue={setNotificationQueue}
+					page = {page}
 				/>
 			)}
-			{page === "patients" && <Patients />}
+			{page === "patients" && <Patients setPage={setPage}/>}
 			{page === "completed" && <Completed />}
+			{page === "trips" && <Trips />}
 			{modal === "doctors" && <Doctors setModal={setModal} />}
 			{modal === "tests" && <Tests setModal={setModal} />}
 			{modal === "treatments" && <Treatments setModal={setModal} />}

@@ -31,13 +31,12 @@ export const toastOptions = {
 
 export default function App() {
   const [detail, setDetail] = useState('');
-  const [page, setPage] = useState('patients');
+  const [page, setPage] = useState('trips');
   const [modal, setModal] = useState('');
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState('');
   const [loginDetails, setLoginDetails] = useState({});
 
   useEffect(() => {
-
     if (localStorage.getItem('email') && localStorage.getItem('password')) {
       setLoginDetails({
         email: localStorage.getItem('email'),
@@ -70,9 +69,9 @@ export default function App() {
       {login === 'true' && (
 
         <DetailContext.Provider value={{ detail, setDetail }}>
-          <Navbar />
+          <Navbar setPage={setPage} />
           <Sidebar setPage={setPage} setModal={setModal} />
-          <Page page={page} modal={modal} setModal={setModal} />
+          <Page page={page} modal={modal} setModal={setModal} setPage={setPage}/>
         </DetailContext.Provider>
       )}
       </LoginDetailsContext.Provider>

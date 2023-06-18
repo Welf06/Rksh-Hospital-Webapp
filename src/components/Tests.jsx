@@ -129,7 +129,7 @@ function Doctor({ setModal }) {
 								onChange={(e) => setName(e.target.value)}
 							/>
 						</div>
-						<div className="flex items-center gap-2 px-9 py-4 py-4">
+						<div className="flex items-center gap-2 px-9 py-4">
 							<SquaresPlusIcon className="h-6 w-6 text-gray-900" />
 							<Input
 								label="Category"
