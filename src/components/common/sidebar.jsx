@@ -85,15 +85,7 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 									setMenuOpen(false);
 								}}
 							>
-								Ongoing
-							</ListItem>
-							<ListItem
-								onClick={() => {
-									setPage("completed");
-									setMenuOpen(false);
-								}}
-							>
-								Completed
+								Ward
 							</ListItem>
 							<ListItem
 								onClick={() => {
@@ -102,6 +94,14 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 								}}
 							>
 								Trips
+							</ListItem>
+							<ListItem
+								onClick={() => {
+									setPage("completed");
+									setMenuOpen(false);
+								}}
+							>
+								Completed
 							</ListItem>
 						</List>
 					</AccordionBody>

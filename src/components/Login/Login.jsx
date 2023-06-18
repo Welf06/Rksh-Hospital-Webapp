@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 
 import { toast } from "react-toastify";
-import { LoginDetailsContext } from "../App";
+import { LoginDetailsContext } from "../../App";
 
 import axios from "axios";
 

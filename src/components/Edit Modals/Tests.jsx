@@ -18,7 +18,7 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-import { LoginDetailsContext } from "../App";
+import { LoginDetailsContext } from "../../App";
 
 const toastOptions = {
 	position: "top-center",

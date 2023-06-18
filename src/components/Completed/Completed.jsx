@@ -9,7 +9,7 @@ import MUIDataTable from "mui-datatables";
 
 import axios from "axios";
 import { toast } from "react-toastify";
-import { LoginDetailsContext } from "../App";
+import { LoginDetailsContext } from "../../App";
 
 const options = {
 	filterType: "checkbox",

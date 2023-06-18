@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import VideoImageModal from "./VideoImageModal";
+import VideoImageModal from "../common/VideoImageModal";
 import {
 	Badge,
 	Typography,

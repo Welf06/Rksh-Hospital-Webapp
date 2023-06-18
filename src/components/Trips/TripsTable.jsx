@@ -3,7 +3,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import axios from "axios";
-import { UsersIcon, BeakerIcon } from "@heroicons/react/24/solid";
+import {
+	UsersIcon,
+	BeakerIcon,
+	TruckIcon,
+	UserIcon,
+} from "@heroicons/react/24/solid";
 import {
 	MagnifyingGlassIcon,
 	ChevronUpDownIcon,
@@ -25,8 +30,8 @@ import {
 
 import { toast } from "react-toastify";
 
-import { DetailContext } from "../App";
-import { LoginDetailsContext } from "../App";
+import { DetailContext } from "../../App";
+import { LoginDetailsContext } from "../../App";
 
 const TABS = [
 	{
@@ -34,27 +39,22 @@ const TABS = [
 		value: "all",
 	},
 	{
-		label: "EW",
-		value: "EW",
+		label: "User",
+		value: "Y",
 	},
 	{
-		label: "ICU",
-		value: "ICU",
-	},
-	{
-		label: "GW",
-		value: "GW",
+		label: "Ambulance",
+		value: "N",
 	},
 ];
 
 const TABLE_HEAD = [
-	{ label: "Bed No.", value: "bedNo" },
-	{ label: "Patient Name", value: "patientData" },
+	{ label: "Type", value: "type" },
+	{ label: "ID/ Details", value: "patientData" },
 	{ label: "Accident Details", value: "accidentDetails" },
-	{ label: "Guardian Details", value: "guardianDetails" },
-	{ label: "Ward Details", value: "wardDetails" },
-	{ label: "Medical Procedures", value: "medicalProcedures" },
-	{ label: "Discharge", value: "discharge" },
+	{ label: "Ambulance Details", value: "ambulanceDetails" },
+	{ label: "Authentication Video", value: "authenticationVideo" },
+	{ label: "Accept Patient ", value: "accept" },
 ];
 
 const toastOptions = {
@@ -68,13 +68,13 @@ const toastOptions = {
 	theme: "light",
 };
 
-function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
+function Table({ setModal, modal }) {
 	const [data, setData] = useState([]);
 	const [curData, setCurData] = useState([]);
 	const [filter, setFilter] = useState("");
 	const [curPage, setCurPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
-	const [numRows, setNumRows] = useState(5);
+	const [numRows, setNumRows] = useState(2);
 
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
@@ -88,13 +88,15 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 	const next = () => {
 		if (curPage === totalPages) return;
 		setCurPage(curPage + 1);
-		setCurData(data.slice(curPage * numRows, (curPage+1) * numRows));
+		setCurData(data.slice(curPage * numRows, (curPage + 1) * numRows));
 	};
 
 	const prev = () => {
 		if (curPage === 1) return;
 		setCurPage(curPage - 1);
-		setCurData(data.slice((curPage-numRows) * numRows, (curPage-1) * numRows ));
+		setCurData(
+			data.slice((curPage - numRows) * numRows, (curPage - 1) * numRows)
+		);
 	};
 
 	useEffect(() => {
@@ -106,29 +108,29 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 		// console.log(data);
 	}, [data]);
 
-   const sendApiCall = async () => {
-			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCases/`;
-			// const url = 'http://127.0.0.1:8000/hospital/getCases/';
-			const data = {
-				email: loginDetails.email,
-				password: loginDetails.password,
-			};
-			const headers = { "Content-Type": "application/json" };
-			console.log(data);
-			try {
-				const response = await axios.post(url, JSON.stringify(data), {
-					headers,
-				});
-				console.log(response.data.cases);
-				setData(response.data.cases);
-				setCurData(response.data.cases.slice(0, numRows));
-				// Handle the response data here
-			} catch (error) {
-				console.error(error);
-				toast.error(error.response.data.detail, toastOptions);
-				// Handle the error here
-			}
+	const sendApiCall = async () => {
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/getHospitalNotification/`;
+		// const url = 'http://127.0.0.1:8000/hospital/getCases/';
+		const data = {
+			email: loginDetails.email,
+			password: loginDetails.password,
 		};
+		const headers = { "Content-Type": "application/json" };
+		// console.log(data);
+		try {
+			const response = await axios.post(url, JSON.stringify(data), {
+				headers,
+			});
+			console.log(response.data);
+			setData(response.data);
+			setCurData(response.data.slice(0, numRows));
+			// Handle the response data here
+		} catch (error) {
+			console.error(error);
+			toast.error(error.response.data.detail, toastOptions);
+			// Handle the error here
+		}
+	};
 
 	const handleSearch = (e) => {
 		if (e.target.value !== "") {
@@ -177,7 +179,7 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 					</Tabs>
 					<div className="w-full md:w-72 pt-1">
 						<Input
-							label="Search Patient Name"
+							label="Search"
 							icon={<MagnifyingGlassIcon className="h-6 w-6 p-1" />}
 							onChange={handleSearch}
 						/>
@@ -238,22 +240,21 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 						{curData.map(
 							(
 								{
-									accidentLocation,
-									accidentTime,
-									age,
-									bed,
-									bloodGroup,
-									consciousness,
-									emergencyType,
-									gender,
-									guardianApproval,
-									guardianName,
+									ambulanceLicense,
+									conscious,
+									document,
+									driverName,
+									driverPhone,
+									estimatedTimeOfArrival,
 									hospital,
 									id,
+									isUserApp,
+									location,
 									name,
-									status,
-									volunteer,
-									ward,
+									natureOfEmergency,
+									startLocation,
+									startTime,
+									video,
 								},
 								index
 							) => {
@@ -267,22 +268,21 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 										key={name}
 										onClick={() => {
 											setDetail({
-												accidentLocation,
-												accidentTime,
-												age,
-												bed,
-												bloodGroup,
-												consciousness,
-												emergencyType,
-												gender,
-												guardianApproval,
-												guardianName,
+												ambulanceLicense,
+												conscious,
+												document,
+												driverName,
+												driverPhone,
+												estimatedTimeOfArrival,
 												hospital,
 												id,
+												isUserApp,
+												location,
 												name,
-												status,
-												volunteer,
-												ward,
+												natureOfEmergency,
+												startLocation,
+												startTime,
+												video,
 											});
 										}}
 									>
@@ -295,36 +295,39 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 														color="blue-gray"
 														className="font-normal"
 													>
-														{bed}
+														{isUserApp === "Y" ? (
+															<UserIcon className="h-8 w-8" />
+														) : (
+															<TruckIcon className="h-8 w-8" />
+														)}
 													</Typography>
 												</div>
 											</div>
 										</td>
 										<td className={classes}>
 											<div className="flex items-center gap-3">
-												{/* <Avatar src={img} alt={name} size="sm" /> */}
-												<div className="flex flex-col">
-													<Typography
-														variant="small"
-														color="blue-gray"
-														className="font-normal"
-													>
-														{name}
-													</Typography>
-													<Typography
-														variant="small"
-														color="blue-gray"
-														className="font-normal opacity-70"
-													>
-														{`${age} | ${gender} | ${
-															bloodGroup ? bloodGroup : "A+ve"
-														} | ${
-															consciousness === "Y"
-																? "conscious"
-																: "unconscious"
-														}`}
-													</Typography>
-												</div>
+												{isUserApp === "Y" ? (
+													<div className="flex flex-col">
+														<Typography
+															variant="small"
+															color="blue-gray"
+															className="font-normal"
+														>
+															{name}
+														</Typography>
+													</div>
+												) : (
+													<div>
+														<Button
+															className="w-20"
+															onClick={() => {
+																setModal({ type: "image", url: document });
+															}}
+														>
+															ID
+														</Button>
+													</div>
+												)}
 											</div>
 										</td>
 										<td className={classes}>
@@ -334,14 +337,15 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 													color="blue-gray"
 													className="font-normal"
 												>
-													{emergencyType}
+													{natureOfEmergency}
 												</Typography>
 												<Typography
 													variant="small"
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{accidentLocation}
+													{location} |{" "}
+													{conscious === "Y" ? "Conscious" : "Unconscious"}
 												</Typography>
 											</div>
 										</td>
@@ -352,96 +356,36 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{guardianName}
+													{driverName}
 												</Typography>
 												<Typography
 													variant="small"
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{guardianApproval}
+													{driverPhone}
 												</Typography>
 												<Typography
 													variant="small"
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{volunteer}
+													{ambulanceLicense}
 												</Typography>
-											</div>
-										</td>
-										<td className={classes}>
-											<div className="w-max flex gap-2 color t">
-												{/* <Chip
-													variant="ghost"
-													size="sm"
-													value={wardDetails ? "online" : "offline"}
-													color={wardDetails ? "green" : "blue-gray"}
-												/> */}
-												<Chip
-													value="EW"
-													variant={ward === "EW" ? "filled" : "outlined"}
-													color="blue"
-												/>
-												<Chip
-													value="ICU"
-													variant={ward === "ICU" ? "filled" : "outlined"}
-													color="blue"
-												/>
-												<Chip
-													value="GW"
-													variant={ward === "GW" ? "filled" : "outlined"}
-													color="blue"
-												/>
-											</div>
-										</td>
-										<td className={classes}>
-											<div className="flex gap-4 ">
-												<div className="">
-													<div
-														className="cursor-pointer flex-col justify-center items-center"
-														onClick={() => {
-															setDoctorModal(true);
-														}}
-													>
-														<UsersIcon
-															className="h-10 w-10 bg-blue-500 rounded p-1"
-															color="white"
-														/>
-														<Typography
-															variant="small"
-															color="blue-gray"
-															className="font-normal opacity-70"
-														>
-															Doctors
-														</Typography>
-													</div>
-												</div>
-												<div
-													className="cursor-pointer z-1000"
-													onClick={() => {
-														setTestModal(true);
-													}}
-												>
-													<BeakerIcon
-														className="h-10 w-10 bg-blue-500 rounded p-1"
-														color="white"
-													/>
-													<Typography
-														variant="small"
-														color="blue-gray"
-														className="font-normal opacity-70"
-														S
-													>
-														Tests
-													</Typography>
-												</div>
 											</div>
 										</td>
 										<td className={classes}>
 											<Button
-                                 onClick={() => {setDischargeModal(true)}}
-                                 >Discharge</Button>
+												onClick={() => {
+													setModal({ type: "video", url: video });
+												}}
+											>
+												{" "}
+												Auth Video
+											</Button>
+										</td>
+										<td className={classes}>
+											<Button>Accept Patient</Button>
 										</td>
 									</tr>
 								);

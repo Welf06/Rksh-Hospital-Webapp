@@ -8,8 +8,10 @@ import {
 } from "@material-tailwind/react";
 
 import {
-   BeakerIcon,
-   SquaresPlusIcon,
+	UserIcon,
+	BuildingOfficeIcon,
+	AcademicCapIcon,
+	PhoneIcon,
 	CheckCircleIcon,
 	XCircleIcon,
 } from "@heroicons/react/24/solid";
@@ -18,7 +20,7 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-import { LoginDetailsContext } from "../App";
+import { LoginDetailsContext } from "../../App";
 
 const toastOptions = {
 	position: "top-center",
@@ -32,20 +34,22 @@ const toastOptions = {
 };
 
 function Doctor({ setModal }) {
-	const [loading, setLoading] = useState(false);
 	const [name, setName] = useState("");
-   const [category, setCategory] = useState("");
-   const [price, setPrice] = useState(0);
-   const [data, setData] = useState([]);
+	const [specialization, setSpecialization] = useState("");
+	const [phone, setPhone] = useState("");
+	const [qualification, setQualification] = useState("");
+	const [loading, setLoading] = useState(false);
 
-   const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
+	const [data, setData] = useState([]);
 
-   useEffect(() => {
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
+
+	useEffect(() => {
 		sendApiCall();
 	}, [loading]);
 
 	const sendApiCall = async () => {
-			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getTreatments/`;
+			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getDoctors/`;
 			const data = {
 				email: loginDetails.email,
 				password: loginDetails.password,
@@ -56,8 +60,8 @@ function Doctor({ setModal }) {
 				const response = await axios.post(url, JSON.stringify(data), {
 					headers,
 				});
-				console.log(response.data.treatments);
-				setData(response.data.treatments);
+				console.log(response.data.doctors);
+				setData(response.data.doctors);
 				// Handle the response data here
 			} catch (error) {
 				console.error(error);
@@ -66,21 +70,28 @@ function Doctor({ setModal }) {
 			}
 		};
 
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
 
+		const phoneRegex = /^\d{10}$/;
+		if (!phoneRegex.test(phone)) {
+			toast.error("Invalid Phone Number", toastOptions);
+			setLoading(false);
+			return;
+		}
+
 		const url =
-			`${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addTreatment/`;
+			`${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addDoctor/`;
 		const data = {
 			hospital: {
 				email: loginDetails.email,
 				password: loginDetails.password,
 			},
 			name: name,
-			price: price,
-			category: category,
+			specialization: specialization,
+			phone: phone,
+			qualification: qualification,
 		};
 
 		// console.log(data);
@@ -93,9 +104,8 @@ function Doctor({ setModal }) {
 			});
 			console.log(response.data);
 			toast.success(response.data.detail, toastOptions);
-         setName("");
-         setCategory("");
-			setLoading(false);
+
+				setLoading(false);
 			// setModal("none");
 		} catch (error) {
 			console.error(error);
@@ -106,24 +116,23 @@ function Doctor({ setModal }) {
 
 	return (
 		<>
-
 			<div
-				className="bg-black opacity-25 absolute top-14 left-0 h-[120vh] w-[100%] z-20 overflow-hidden"
+				className="bg-black opacity-25 absolute top-14 left-0 h-[125vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {
 					setModal("none");
 				}}
 			></div>
-			<Card className="bg-white opacity-100 absolute top-0 left-0 max-h-[100vh] w-[40%] ml-[30%] mt-20 z-30 rounded-2xl border-2 border-background p-1">
+			<Card className="bg-white opacity-100 absolute top-0 left-0 max-h-[120vh] w-[40%] ml-[30%] mt-20 z-30 rounded-2xl border-2 border-background p-1">
 				<div className="rounded-2xl overflow-auto max-h-[75vh]">
 					<div className="flex items-center p-9">
 						<Typography variant="h3" color="black" className="">
-							Add Treatments
+							Add Doctor
 						</Typography>
 					</div>
 					<hr className="mt-[-2rem] border-gray-300 w-[90%] m-[auto]" />
 					<form className="px-4">
 						<div className="flex items-center gap-2 px-9 py-4 pt-10">
-							<BeakerIcon className="h-6 w-6 text-gray-900" />
+							<UserIcon className="h-6 w-6 text-gray-900" />
 							<Input
 								label="Name"
 								type="text"
@@ -132,14 +141,34 @@ function Doctor({ setModal }) {
 								onChange={(e) => setName(e.target.value)}
 							/>
 						</div>
-						<div className="flex items-center gap-2 px-9 py-4">
-							<SquaresPlusIcon className="h-6 w-6 text-gray-900" />
+						<div className="flex items-center px-9 py-4 gap-2">
+							<BuildingOfficeIcon className="h-6 w-6 text-gray-900" />
 							<Input
-								label="Category"
+								label="Department"
 								type="text"
 								color="blue-gray"
-								value={category}
-								onChange={(e) => setCategory(e.target.value)}
+								value={specialization}
+								onChange={(e) => setSpecialization(e.target.value)}
+							/>
+						</div>
+						<div className="flex items-center px-9 py-4 gap-2">
+							<AcademicCapIcon className="h-6 w-6 text-gray-900" />
+							<Input
+								label="Qualification"
+								type="text"
+								color="blue-gray"
+								value={qualification}
+								onChange={(e) => setQualification(e.target.value)}
+							/>
+						</div>
+						<div className="flex items-center px-9 py-4 gap-2">
+							<PhoneIcon className="h-6 w-6 text-gray-900" />
+							<Input
+								label="Phone Number"
+								type="number"
+								color="blue-gray"
+								value={phone}
+								onChange={(e) => setPhone(e.target.value)}
 							/>
 						</div>
 						<div className="flex items-center p-9 justify-center gap-10">
@@ -171,18 +200,18 @@ function Doctor({ setModal }) {
 						</div>
 					</form>
 				</div>
-            <div className="overflow-hidden border-background border-solid border-2 rounded-2xl p-1 mx-14 mb-4">
-				<Card className="max-h-80 overflow-auto px-7 py-4">
+				<div className="overflow-hidden border-background border-solid border-2 rounded-2xl p-1 mx-14 mb-4">
+				<Card className="h-80 overflow-auto px-7 py-4">
 					<Typography variant="h5" color="black" className="text-left">
-						Treatments
+						Doctors
 					</Typography>
-					<hr className="mt-1 border-gray-500 w-[100%] m-[auto]" />
-					<div className="flex flex-col items-start gap-0 mt-2">
-						{data.map((treatment) => (
-							<div className="flex items-center gap-1 pl-1 py-2">
-								<BeakerIcon className="h-6 w-6 text-gray-900" />
+					<hr className="mt-1 mb-4 border-gray-500 w-[100%]" />
+					<div className="flex flex-col items-start gap-0 mt-0">
+						{data.map((doctor) => (
+							<div key={doctor.name} className="flex items-center gap-1 pl-1 py-2">
+								<UserIcon className="h-6 w-6 text-gray-900" />
 								<Typography variant="text" color="black">
-									{`${treatment.category}: ${treatment.name}`}
+									{`${doctor.name}, ${doctor.qualification}: ${doctor.specialization}`}
 								</Typography>
 							</div>
 						))}

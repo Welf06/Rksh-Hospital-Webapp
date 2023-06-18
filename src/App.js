@@ -2,9 +2,9 @@ import { useState, createContext, useEffect, useContext } from 'react';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Login from './components/Login';
-import Sidebar from './components/sidebar';
-import Navbar from './components/navbar';
+import Login from './components/Login/Login';
+import Sidebar from './components/common/sidebar';
+import Navbar from './components/common/navbar';
 import Page from './components/Page'
 
 import './styles/App.css'

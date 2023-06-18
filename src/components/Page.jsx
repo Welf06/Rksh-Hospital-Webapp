@@ -4,13 +4,13 @@ import { getToken, onMessage } from "firebase/messaging";
 
 import axios from "axios";
 
-import Patients from "./Patients";
-import Completed from "./Completed";
-import Trips from "./Trips";
-import Doctors from "./Doctor";
-import Tests from "./Tests";
-import Treatments from "./Treatments";
-import NotificationModal from "./NotificationModal";
+import Patients from "./Patients/Patients";
+import Completed from "./Completed/Completed";
+import Trips from "./Trips/Trips";
+import Doctors from "./Edit Modals/Doctor";
+import Tests from "./Edit Modals/Tests";
+import Treatments from "./Edit Modals/Treatments";
+import NotificationModal from "./common/NotificationModal";
 
 import { LoginDetailsContext, toastOptions } from "../App";
 import { toast } from "react-toastify";
