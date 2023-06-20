@@ -50,11 +50,14 @@ const TABS = [
 
 const TABLE_HEAD = [
 	{ label: "Type", value: "type" },
-	{ label: "ID/ Details", value: "patientData" },
+	{ label: "Patient Details", value: "patientData" },
 	{ label: "Accident Details", value: "accidentDetails" },
 	{ label: "Ambulance Details", value: "ambulanceDetails" },
+	{ label: "Ward Details", value: "wardDetails" },
+	{ label: "ID", value: "id" },
 	{ label: "Authentication Video", value: "authenticationVideo" },
-	{ label: "Accept Patient ", value: "accept" },
+	{ label: "Add Details", value: "accept" },
+	{ label: "Admit", value: "admit" },
 ];
 
 const toastOptions = {
@@ -74,7 +77,7 @@ function Table({ setModal, modal }) {
 	const [filter, setFilter] = useState("");
 	const [curPage, setCurPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
-	const [numRows, setNumRows] = useState(2);
+	const [numRows, setNumRows] = useState(5);
 
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
@@ -164,7 +167,7 @@ function Table({ setModal, modal }) {
 										}
 
 										const newData = data.filter((row) => {
-											return row.ward
+											return row.isUserApp
 												.toLowerCase()
 												.includes(value.toLowerCase());
 										});
@@ -204,9 +207,6 @@ function Table({ setModal, modal }) {
 											} else if (value === "accidentDetails") {
 												value1 = a.emergencyType;
 												value2 = b.emergencyType;
-											} else if (value === "bedNo") {
-												value1 = a.bed;
-												value2 = b.bed;
 											}
 
 											if (value1 < value2) {
@@ -265,7 +265,7 @@ function Table({ setModal, modal }) {
 
 								return (
 									<tr
-										key={name}
+										key={index}
 										onClick={() => {
 											setDetail({
 												ambulanceLicense,
@@ -306,28 +306,15 @@ function Table({ setModal, modal }) {
 										</td>
 										<td className={classes}>
 											<div className="flex items-center gap-3">
-												{isUserApp === "Y" ? (
-													<div className="flex flex-col">
-														<Typography
-															variant="small"
-															color="blue-gray"
-															className="font-normal"
-														>
-															{name}
-														</Typography>
-													</div>
-												) : (
-													<div>
-														<Button
-															className="w-20"
-															onClick={() => {
-																setModal({ type: "image", url: document });
-															}}
-														>
-															ID
-														</Button>
-													</div>
-												)}
+												<div className="flex flex-col">
+													<Typography
+														variant="small"
+														color="blue-gray"
+														className="font-normal"
+													>
+														{}
+													</Typography>
+												</div>
 											</div>
 										</td>
 										<td className={classes}>
@@ -374,6 +361,19 @@ function Table({ setModal, modal }) {
 												</Typography>
 											</div>
 										</td>
+										<td>Hello</td>
+										<td>
+											<div>
+												<Button
+													className="w-20"
+													onClick={() => {
+														setModal({ type: "image", url: document });
+													}}
+												>
+													ID
+												</Button>
+											</div>
+										</td>
 										<td className={classes}>
 											<Button
 												onClick={() => {
@@ -385,7 +385,28 @@ function Table({ setModal, modal }) {
 											</Button>
 										</td>
 										<td className={classes}>
-											<Button>Accept Patient</Button>
+											<Button onClick={() => setModal({ type: "addDetails" })}>
+												Add Details
+											</Button>
+										</td>
+										<td className={classes}>
+											<Button
+												onClick={() => {
+													if (
+														!(
+															detail.name &&
+															detail.bloodGroup &&
+															detail.ward &&
+															detail.bed &&
+															detail.gender
+														)
+													 )
+													 return toast.error("Enter the Patient Details");
+														setModal({ type: "accept" });
+												}}
+											>
+												Admit
+											</Button>
 										</td>
 									</tr>
 								);

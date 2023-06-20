@@ -48,7 +48,7 @@ function VideoImageModal({ modal, setModal }) {
 	return (
 		<>
 			{modal === "" && <></>}
-			{modal !== "" && (
+			{(modal.type === "video" || modal.type === "image") && (
 				<div>
 					<div
 						className="bg-black opacity-25 absolute top-14 left-0 h-[125vh] w-[100%] z-20 overflow-hidden"

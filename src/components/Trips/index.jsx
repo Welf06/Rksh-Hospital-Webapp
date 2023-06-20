@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import VideoImageModal from "../common/VideoImageModal";
 import {
 	Badge,
 	Typography,
@@ -10,6 +9,9 @@ import {
 import { TruckIcon } from "@heroicons/react/24/solid";
 
 import TripsTable from "./TripsTable";
+import VideoImageModal from "../common/VideoImageModal";
+import AcceptModal from "./AcceptModal";
+import AddDetailsModal from "./AddDetailsModal";
 
 function Trips({setPage}) {
    const [modal, setModal] = useState("")
@@ -28,7 +30,9 @@ function Trips({setPage}) {
 				/>
 			</div>
          <VideoImageModal modal={modal} setModal={setModal} />
-		</>
+			{modal.type === "accept" && <AcceptModal modal={modal} setModal={setModal} />}
+			{modal.type === "addDetails" && <AddDetailsModal modal={modal} setModal={setModal} />}
+		</>	
 	);
 }
 

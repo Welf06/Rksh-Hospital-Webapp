@@ -18,9 +18,16 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 		let differenceInMilliseconds = etaDate - now;
 		// convert it to seconds
 		let differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
-		console.log(now, etaDate, differenceInSeconds);
+		console.log( etaDate);
 		return Math.floor(differenceInSeconds / 60);
 	};
+
+	const getTime = (time) => {
+		const date = new Date(time);
+		console.log(date);
+		return date.toLocaleTimeString();
+	};
+	
 	return (
 		<>
 			<div className="bg-black opacity-25 absolute top-14 left-0 h-[125vh] w-[100%] z-20 overflow-hidden"></div>
@@ -42,7 +49,7 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 							</Typography>
 							<Typography variant="lead">{notification.name}</Typography>
 							<Typography variant="lead">
-								{notification.start_time} |{" "}
+								{getTime(notification.start_time)} |{" "}
 								{notification.conscious === "Y" ? "Conscious" : "Unconscious"}
 							</Typography>
 							<Typography variant="para">

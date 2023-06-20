@@ -4,9 +4,9 @@ import { getToken, onMessage } from "firebase/messaging";
 
 import axios from "axios";
 
-import Patients from "./Patients/Patients";
-import Completed from "./Completed/Completed";
-import Trips from "./Trips/Trips";
+import Patients from "./Patients/index";
+import Completed from "./Completed/index";
+import Trips from "./Trips/index";
 import Doctors from "./Edit Modals/Doctor";
 import Tests from "./Edit Modals/Tests";
 import Treatments from "./Edit Modals/Treatments";
@@ -58,7 +58,10 @@ function Page({ page, modal, setModal, setPage }) {
         })
         .catch((error) => {
           console.error(error);
+			 if (error.response)
           toast.error(error.response.data.detail, toastOptions);
+			 else
+			 toast.error(error.message, toastOptions)
         });
 
 		} else if (permission === "denied") {

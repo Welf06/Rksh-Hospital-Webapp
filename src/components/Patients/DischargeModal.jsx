@@ -24,7 +24,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function TestsModal({ setDischargeModal }) {
+function DischargeModal({ setDischargeModal }) {
    const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
@@ -112,4 +112,4 @@ function TestsModal({ setDischargeModal }) {
 	);
 }
 
-export default TestsModal;
+export default DischargeModal;

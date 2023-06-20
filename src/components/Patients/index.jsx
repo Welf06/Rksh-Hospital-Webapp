@@ -30,7 +30,7 @@ function Patients({ setPage }) {
 					<Typography variant="h3" color="black">
 						Emergency Ward Patients Record
 					</Typography>
-					<Badge content="5" withBorder>
+					<Badge withBorder>
 						<Button
 							className="flex items-center gap-2"
 							onClick={() => setPage("trips")}

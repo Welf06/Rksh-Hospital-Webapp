@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getMessaging } from "firebase/messaging";
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
-   apiKey: "AIzaSyCLuV65hHaqF3to-6wFCt60lDq44kbVWPU",
-   authDomain: "hospitalapp-387104.firebaseapp.com",
-   projectId: "hospitalapp-387104",
-   storageBucket: "hospitalapp-387104.appspot.com",
-   messagingSenderId: "172387330522",
-   appId: "1:172387330522:web:488509267ca53df2d838e3",
-   measurementId: "G-XM59CBMWMR"
+   apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
+   authDomain: `${process.env.REACT_APP_FIREBASE_AUTH_DOMAIN}`,
+   projectId: `${process.env.REACT_APP_FIREBASE_PROJECT_ID}`,
+   storageBucket: `${process.env.REACT_APP_FIREBASE_STORAGE_BUCKET}`,
+   messagingSenderId: `${process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID}`,
+   appId: `${process.env.REACT_APP_FIREBASE_APP_ID}`,
+   measurementId: `${process.env.REACT_APP_FIREBASE_MEASUREMENT_ID}`
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
