@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { toast } from "react-toastify";
 
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
@@ -28,10 +29,19 @@ import {
 	IconButton,
 } from "@material-tailwind/react";
 
-import { toast } from "react-toastify";
 
 import { DetailContext } from "../../App";
-import { LoginDetailsContext } from "../../App";
+
+const toastOptions = {
+	position: "top-center",
+	autoClose: 1000,
+	hideProgressBar: true,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "light",
+};
 
 const TABS = [
 	{
@@ -60,27 +70,13 @@ const TABLE_HEAD = [
 	{ label: "Admit", value: "admit" },
 ];
 
-const toastOptions = {
-	position: "top-center",
-	autoClose: 1000,
-	hideProgressBar: true,
-	closeOnClick: true,
-	pauseOnHover: true,
-	draggable: true,
-	progress: undefined,
-	theme: "light",
-};
 
-function Table({ setModal, modal }) {
-	const [data, setData] = useState([]);
-	const [curData, setCurData] = useState([]);
+function Table({ setModal, modal, curData, setCurData, data, setData, numRows, setNumRows, sendApiCall}) {
 	const [filter, setFilter] = useState("");
 	const [curPage, setCurPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
-	const [numRows, setNumRows] = useState(5);
 
 	const { detail, setDetail } = useContext(DetailContext);
-	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
 	const getItemProps = (index) => ({
 		variant: curPage === index ? "filled" : "text",
@@ -111,29 +107,7 @@ function Table({ setModal, modal }) {
 		// console.log(data);
 	}, [data]);
 
-	const sendApiCall = async () => {
-		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/getHospitalNotification/`;
-		// const url = 'http://127.0.0.1:8000/hospital/getCases/';
-		const data = {
-			email: loginDetails.email,
-			password: loginDetails.password,
-		};
-		const headers = { "Content-Type": "application/json" };
-		// console.log(data);
-		try {
-			const response = await axios.post(url, JSON.stringify(data), {
-				headers,
-			});
-			console.log(response.data);
-			setData(response.data);
-			setCurData(response.data.slice(0, numRows));
-			// Handle the response data here
-		} catch (error) {
-			console.error(error);
-			toast.error(error.response.data.detail, toastOptions);
-			// Handle the error here
-		}
-	};
+
 
 	const handleSearch = (e) => {
 		if (e.target.value !== "") {
@@ -207,7 +181,10 @@ function Table({ setModal, modal }) {
 											} else if (value === "accidentDetails") {
 												value1 = a.emergencyType;
 												value2 = b.emergencyType;
-											}
+											} else if (value === "wardDetails") {
+												value1 = `${a.ward}${a.bed}`;
+												value2 = `${b.ward}${b.bed}`;
+											} 
 
 											if (value1 < value2) {
 												return -1;
@@ -228,7 +205,7 @@ function Table({ setModal, modal }) {
 										{label}{" "}
 										{(value === "patientData" ||
 											value === "accidentDetails" ||
-											value === "bedNo") && (
+											value === "wardDetails") && (
 											<ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
 										)}
 									</Typography>
@@ -240,12 +217,16 @@ function Table({ setModal, modal }) {
 						{curData.map(
 							(
 								{
+									age,
 									ambulanceLicense,
-									conscious,
+									bed,
+									bloodGroup,
+									consciousness,
 									document,
 									driverName,
 									driverPhone,
 									estimatedTimeOfArrival,
+									gender,
 									hospital,
 									id,
 									isUserApp,
@@ -255,6 +236,7 @@ function Table({ setModal, modal }) {
 									startLocation,
 									startTime,
 									video,
+									ward,
 								},
 								index
 							) => {
@@ -268,12 +250,16 @@ function Table({ setModal, modal }) {
 										key={index}
 										onClick={() => {
 											setDetail({
+												age,
 												ambulanceLicense,
-												conscious,
+												bed,
+												bloodGroup,
+												consciousness,
 												document,
 												driverName,
 												driverPhone,
 												estimatedTimeOfArrival,
+												gender,
 												hospital,
 												id,
 												isUserApp,
@@ -283,6 +269,7 @@ function Table({ setModal, modal }) {
 												startLocation,
 												startTime,
 												video,
+												ward,
 											});
 										}}
 									>
@@ -312,7 +299,17 @@ function Table({ setModal, modal }) {
 														color="blue-gray"
 														className="font-normal"
 													>
-														{}
+														{name}
+													</Typography>
+													<Typography
+														variant="small"
+														color="blue-gray"
+														className="font-normal opacity-70"
+													>
+													{(age !== null && gender!==null && bloodGroup!==null) ? (
+														<>{age} | {gender} | {bloodGroup}ve</>
+													):(<></>)}
+														
 													</Typography>
 												</div>
 											</div>
@@ -332,12 +329,12 @@ function Table({ setModal, modal }) {
 													className="font-normal opacity-70"
 												>
 													{location} |{" "}
-													{conscious === "Y" ? "Conscious" : "Unconscious"}
+													{consciousness === "Y" ? "Conscious" : "Unconscious"}
 												</Typography>
 											</div>
 										</td>
 										<td className={classes}>
-											<div className="flex flex-col">
+											<div className="flex flex-col items-center justify-center">
 												<Typography
 													variant="small"
 													color="blue-gray"
@@ -361,7 +358,19 @@ function Table({ setModal, modal }) {
 												</Typography>
 											</div>
 										</td>
-										<td>Hello</td>
+										<td>
+											<div className="flex flex-col items-center justify-center">
+											<Typography
+													variant="medium"
+													color="blue-gray"
+													className="font-normal"
+												>
+												{ward !== null && bed !== null ? (
+														<>{ward} | {bed}</>
+													):(<></>)}
+												</Typography>
+											</div>
+										</td>
 										<td>
 											<div>
 												<Button
@@ -400,9 +409,9 @@ function Table({ setModal, modal }) {
 															detail.bed &&
 															detail.gender
 														)
-													 )
-													 return toast.error("Enter the Patient Details");
-														setModal({ type: "accept" });
+													)
+														return toast.error("Enter the Patient Details", toastOptions);
+													setModal({ type: "accept" });
 												}}
 											>
 												Admit

@@ -26,20 +26,25 @@ const toastOptions = {
 	theme: "light",
 };
 
-function AddDetailsModal({ modal, setModal }) {
+function AddDetailsModal({ modal, setModal, sendApiCall }) {
 	const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
-	const admitPatient = async () => {
+	const addPatientDetails = async () => {
 		setLoading(true);
-		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/dischargeCase/`;
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/addTripDetails/`;
 		const data = {
-			hospital: {
-				email: loginDetails.email,
-				password: loginDetails.password,
-			},
+			email: loginDetails.email,
+			password: loginDetails.password,
+			id: detail.id,
+			gender: detail.gender,
+			ward: detail.ward,
 			name: detail.name,
+			age: detail.age,
+			consciousness: detail.consciousness,
+			bloodGroup: detail.bloodGroup,
+			bed: detail.bed,
 		};
 		const headers = { "Content-Type": "application/json" };
 		console.log(data);
@@ -49,9 +54,10 @@ function AddDetailsModal({ modal, setModal }) {
 			});
 			console.log(response.data);
 			toast.success(
-				"Patient Discharged, Refresh the Page to see the Changes",
+				"Patient Details Added",
 				toastOptions
 			);
+         sendApiCall();
 			setTimeout(() => {
 				setModal("");
 				setLoading(false);
@@ -115,24 +121,33 @@ function AddDetailsModal({ modal, setModal }) {
 									/>
 								</div>
 								<div className="flex gap-8">
-									<Input
-										type="text"
+									<Select
 										label="Gender"
 										value={detail.gender}
-										onChange={(e) =>
-											setDetail({ ...detail, gender: e.target.value })
-										}
-									/>
-									<Input
-										type="text"
-										label="Blood Group"
-										value={detail.bloodGroup}
-										onChange={(e) =>
-											setDetail({ ...detail, bloodGroup: e.target.value })
-										}
-									/>
+										onChange={(e) => setDetail({ ...detail, gender: e })}
+									>
+										<Option value="M">Male</Option>
+										<Option value="F">Female</Option>
+										<Option value="O">Other</Option>
+									</Select>
+                           <Select
+                              label="Blood Group"
+                              value={detail.bloodGroup}
+                              onChange={(e) =>
+                                 setDetail({ ...detail, bloodGroup: e })
+                              }
+                           >
+                              <Option value="A+">A+</Option>
+                              <Option value="A-">A-</Option>
+                              <Option value="B+">B+</Option>
+                              <Option value="B-">B-</Option>
+                              <Option value="AB+">AB+</Option>
+                              <Option value="AB-">AB-</Option>
+                              <Option value="O+">O+</Option>
+                              <Option value="O-">O-</Option>
+                           </Select>
 								</div>
-                        <Select
+								<Select
 									label="Consciousness"
 									value={detail.consciousness}
 									onChange={(e) => setDetail({ ...detail, consciousness: e })}
@@ -140,22 +155,24 @@ function AddDetailsModal({ modal, setModal }) {
 									<Option value="Y">Conscious</Option>
 									<Option value="N">Unconscious</Option>
 								</Select>
-                        <div className="flex gap-8">
-                        <Select
-									label="Ward"
-									value={detail.consciousness}
-									onChange={(e) => setDetail({ ...detail, consciousness: e })}
-								>
-									<Option value="EW">EW</Option>
-									<Option value="ICU">ICU</Option>
-                           <Option value="GW">GW</Option>
-								</Select>
-                        <Input
-                           label="Bed"
-                           value={detail.bed}
-                           onChange={(e) => setDetail({ ...detail, bed: e.target.value })}
-                        />
-                        </div>
+								<div className="flex gap-8">
+									<Select
+										label="Ward"
+										value={detail.ward}
+										onChange={(e) => setDetail({ ...detail, ward: e })}
+									>
+										<Option value="EW">EW</Option>
+										<Option value="ICU">ICU</Option>
+										<Option value="GW">GW</Option>
+									</Select>
+									<Input
+										label="Bed"
+										value={detail.bed}
+										onChange={(e) =>
+											setDetail({ ...detail, bed: e.target.value })
+										}
+									/>
+								</div>
 							</div>
 						</div>
 						<div className="flex flex-row items-center justify-center my-4 gap-8">
@@ -164,7 +181,7 @@ function AddDetailsModal({ modal, setModal }) {
 								color="primary"
 								className="mx-2 w-40 text-md"
 								onClick={() => {
-									admitPatient();
+									addPatientDetails();
 								}}
 								disabled={loading}
 							>

@@ -20,7 +20,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function AcceptModal({ modal, setModal }) {
+function AcceptModal({ modal, setModal, sendApiCall }) {
 	const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
