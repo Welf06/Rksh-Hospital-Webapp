@@ -43,10 +43,10 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 					<UserCircleIcon className="h-12 w-12 text-white" />
 					<div className="flex flex-col justify-left items-start">
 						<Typography variant="h5" color="white">
-							{loginDetails.name.split("-")[0]}
+							{loginDetails.name}
 						</Typography>
 						<Typography variant="small" color="white">
-							{loginDetails.name.split("-")[1]}
+							{loginDetails.hospitalAdress}
 						</Typography>
 					</div>
 				</div>

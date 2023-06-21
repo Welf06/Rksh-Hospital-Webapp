@@ -20,7 +20,6 @@ import './styles/App.css'
 export const DetailContext = createContext();
 // Testing Details:
 // const detail = {
-  //  name: 'City Hospital - Bangalore',
 //   email: info@cityhospital.com
 //   password: mypassword123
 
@@ -41,7 +40,6 @@ export default function App() {
   const [detail, setDetail] = useState('');
   const [page, setPage] = useState('');
   const [modal, setModal] = useState('');
-  const [login, setLogin] = useState('');
   const [loginDetails, setLoginDetails] = useState({});
 
   useEffect(() => {
@@ -49,7 +47,8 @@ export default function App() {
       setLoginDetails({
         email: localStorage.getItem('email'),
         password: localStorage.getItem('password'),
-        name: localStorage.getItem('name')
+        name: localStorage.getItem('name'),
+        hospitalAddress: localStorage.getItem('hospitalAddress'),
       });
       localStorage.getItem('page') && setPage(localStorage.getItem('page'));
     }
@@ -88,6 +87,7 @@ export default function App() {
 					password: loginDetails.password,
 				},
         registration_id: token,
+        update_device: true
 			};
 			const headers = { "Content-Type": "application/json" };
 
@@ -125,8 +125,6 @@ export default function App() {
         theme="light"
       />
         <DetailContext.Provider value={{ detail, setDetail }}>
-          <Navbar setPage={setPage} />
-          <Sidebar setPage={setPage} setModal={setModal} />
           <Page page={page} modal={modal} setModal={setModal} setPage={setPage}/>
         </DetailContext.Provider>
       </LoginDetailsContext.Provider>

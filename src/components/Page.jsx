@@ -12,6 +12,8 @@ import Doctors from "./Edit Modals/Doctor";
 import Tests from "./Edit Modals/Tests";
 import Treatments from "./Edit Modals/Treatments";
 import NotificationModal from "./common/NotificationModal";
+import Navbar from "./common/navbar";
+import Sidebar from "./common/sidebar";
 
 import { LoginDetailsContext, toastOptions } from "../App";
 import { toast } from "react-toastify";
@@ -44,6 +46,8 @@ function Page({ page, modal, setModal, setPage }) {
 					page = {page}
 				/>
 			)}
+			<Navbar setPage={setPage} />
+			{page !== "login" && <Sidebar setPage={setPage} setModal={setModal} />}
 			{page === "login" && <Login setPage={setPage} />}
 			{page === "patients" && <Patients setPage={setPage}/>}
 			{page === "completed" && <Completed />}

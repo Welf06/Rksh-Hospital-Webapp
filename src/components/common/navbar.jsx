@@ -14,9 +14,13 @@ function Navbar({setPage}) {
 	return (
 		<div className="bg-gray-300 h-14 flex justify-between items-center px-5 pl-10">
          <img src={Logo} alt="logo" className="h-12 w-24"/>
-			<div className="flex items-center">
+			<div className="flex gap-2 justify-center">
 			<Typography variant="h5" color="black">
-            {loginDetails.name}
+            {loginDetails.name} -
+         </Typography>
+
+			<Typography variant="h6" color="black">
+            {loginDetails.hospitalAddress}
          </Typography>
 			</div>
 		</div>
