@@ -10,8 +10,9 @@ function ImageModal({url}) {
 				objectFit: "cover",
 				objectPosition: "center",
 				width: "100%",
-				maxHeight: "100%",
+				maxHeight: "80vh",
 				borderRadius: "10px",
+				
 			}}
 			src={ 
             url ? url :
@@ -26,10 +27,9 @@ function VideoModal({url}) {
 		<video
 			controls
 			style={{
-				objectFit: "cover",
 				objectPosition: "center",
 				width: "100%",
-				maxHeight: "100%",
+				maxHeight: "80vh",
 				borderRadius: "10px",
 			}}
 		>
@@ -44,19 +44,18 @@ function VideoModal({url}) {
 	);
 }
 function VideoImageModal({ modal, setModal }) {
-   console.log(modal)
 	return (
 		<>
 			{modal === "" && <></>}
 			{(modal.type === "video" || modal.type === "image") && (
 				<div>
 					<div
-						className="bg-black opacity-25 absolute top-14 left-0 h-[125vh] w-[100%] z-20 overflow-hidden"
+						className="bg-black opacity-25 absolute top-14 left-0 h-[100vh] w-[100%] z-20 overflow-hidden"
 						onClick={() => {
 							setModal("");
 						}}
 					></div>
-					<Card className="bg-white opacity-100 absolute top-0 left-0 min-h-[70vh] max-h-[120vh] w-[60%] ml-[20%] mt-20 z-30 rounded-2xl border-2 border-background p-1">
+					<Card className="bg-white opacity-100 absolute top-0 left-0 min-h-[50vh] max-h-[80vh] w-[60%] ml-[20%] mt-20 z-30 rounded-2xl border-2 border-background p-1">
 						{modal.type === "video" && <VideoModal url={modal.url} />}
 						{modal.type === "image" && <ImageModal url={modal.url}/>}
 					</Card>
