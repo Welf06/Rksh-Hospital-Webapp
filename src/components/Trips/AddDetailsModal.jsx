@@ -96,9 +96,7 @@ function AddDetailsModal({ modal, setModal, sendApiCall }) {
 									maxHeight: "80%",
 									borderRadius: "10px",
 								}}
-								src={
-									"https://mswordidcards.com/wp-content/uploads/2018/05/Non-government-organization-id-card-1-CRC.jpg"
-								}
+								src={detail.document}
 							></img>
 
 							<div className="flex flex-col items-center justify-center gap-4 my-4">

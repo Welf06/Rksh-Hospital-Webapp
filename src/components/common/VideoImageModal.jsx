@@ -9,9 +9,10 @@ function ImageModal({url}) {
 			style={{
 				objectFit: "cover",
 				objectPosition: "center",
-				width: "100%",
-				maxHeight: "80vh",
+				maxWidth: "100%",
+				maxHeight: "75vh",
 				borderRadius: "10px",
+				margin: "auto",
 				
 			}}
 			src={ 
@@ -29,7 +30,7 @@ function VideoModal({url}) {
 			style={{
 				objectPosition: "center",
 				width: "100%",
-				maxHeight: "80vh",
+				maxHeight: "75vh",
 				borderRadius: "10px",
 			}}
 		>
@@ -56,8 +57,10 @@ function VideoImageModal({ modal, setModal }) {
 						}}
 					></div>
 					<Card className="bg-white opacity-100 absolute top-0 left-0 min-h-[50vh] max-h-[80vh] w-[60%] ml-[20%] mt-20 z-30 rounded-2xl border-2 border-background p-1">
+					<div>
 						{modal.type === "video" && <VideoModal url={modal.url} />}
 						{modal.type === "image" && <ImageModal url={modal.url}/>}
+						</div>
 					</Card>
 				</div>
 			)}

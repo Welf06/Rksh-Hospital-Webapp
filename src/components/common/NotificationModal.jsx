@@ -12,14 +12,7 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 	console.log(notification);
 
 	const getETA = (eta) => {
-		const now = new Date();
-		const etaDate = new Date(eta);
-		// get the difference in milliseconds
-		let differenceInMilliseconds = etaDate - now;
-		// convert it to seconds
-		let differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
-		console.log( etaDate);
-		return Math.floor(differenceInSeconds / 60);
+		return Math.floor(eta/60);
 	};
 
 	const getTime = (time) => {
@@ -71,14 +64,14 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 					<div className="flex justify-center gap-16 mt-4">
 						<Button
 							className="w-60 py-4 flex items-center gap-2 justify-center"
-							onClick={() => setModal({type: "video", "url": notification.video})}
+							onClick={() => setModal({type: "video", "url": notification.video_url})}
 						>
 							<VideoCameraIcon className="h-6 w-6" />
 							Authentication Video
 						</Button>
 						<Button
 							className="w-60 py-4 flex items-center gap-2 justify-center"
-							onClick={() => setModal({"type": "image", "url":notification.document})}
+							onClick={() => setModal({"type": "image", "url":notification.document_url})}
 						>
 							<IdentificationIcon className="h-6 w-6" />
 							Patient ID

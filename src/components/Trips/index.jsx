@@ -50,8 +50,8 @@ function Trips({setPage}) {
 				headers,
 			});
 			console.log(response.data);
-			setData(response.data);
-			setCurData(response.data.slice(0, numRows));
+			setData(response.data.reverse());
+			setCurData(response.data.reverse().slice(0, numRows));
 			// Handle the response data here
 		} catch (error) {
 			console.error(error);
