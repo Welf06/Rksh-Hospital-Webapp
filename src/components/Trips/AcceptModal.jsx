@@ -27,13 +27,11 @@ function AcceptModal({ modal, setModal, sendApiCall }) {
 
 	const admitPatient = async () => {
 		setLoading(true);
-		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/dischargeCase/`;
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/deleteNotification/`;
 		const data = {
-			hospital: {
 				email: loginDetails.email,
 				password: loginDetails.password,
-			},
-			name: detail.name,
+            id: detail.id,
 		};
 		const headers = { "Content-Type": "application/json" };
 		console.log(data);
@@ -43,9 +41,10 @@ function AcceptModal({ modal, setModal, sendApiCall }) {
 			});
 			console.log(response.data);
 			toast.success(
-				"Patient Discharged, Refresh the Page to see the Changes",
+				"Patient Admitted",
 				toastOptions
 			);
+         sendApiCall();
 			setTimeout(() => {
 				setModal("");
 				setLoading(false);
@@ -106,7 +105,7 @@ function AcceptModal({ modal, setModal, sendApiCall }) {
                                  {`Consciousness: ${detail.consciousness}`}
                               </Typography>
                               <Typography variant="text" color="black">
-                                 {`Type: ${detail.type}`}
+                                 {`Type: ${detail.natureOfEmergency}`}
                               </Typography>
                               <Typography variant="text" color="black">
                                  {`Location: ${detail.location}`}

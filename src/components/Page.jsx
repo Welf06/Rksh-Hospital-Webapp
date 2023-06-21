@@ -4,6 +4,7 @@ import { getToken, onMessage } from "firebase/messaging";
 
 import axios from "axios";
 
+import Login from "./Login/Login";
 import Patients from "./Patients/index";
 import Completed from "./Completed/index";
 import Trips from "./Trips/index";
@@ -23,52 +24,10 @@ function Page({ page, modal, setModal, setPage }) {
 	const { loginDetails } = useContext(LoginDetailsContext);
 
 	useEffect(() => {
-		requestNotificationPermission();
-	}, []);
-
-	useEffect(() => {
 		console.log(notificationQueue);
 	}, [notificationQueue]);
 
-	async function requestNotificationPermission() {
-		const permission = await Notification.requestPermission();
-		if (permission === "granted") {
-			// Generating token for the instance
-			console.log("getting the token");
-			const token = await getToken(messaging, {
-				validKey:
-					"BEGnFm9aWNi4pW8_jlhusRsKF7PvglvtDwL4EpHYNkGk7fb6BhQVYXwxtKmJJ3o4RjITToCQY0iRODWjw-pnxQg",
-			});
-			console.log(token);
-			// Sending the token to the Backend
 
-			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/createGCMDevice/`;
-			const data = {
-				hospital: {
-					email: loginDetails.email,
-					password: loginDetails.password,
-				},
-        registration_id: token,
-			};
-			const headers = { "Content-Type": "application/json" };
-
-      axios.post(url, JSON.stringify(data), { headers })
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-			 if (error.response)
-          toast.error(error.response.data.detail, toastOptions);
-			 else
-			 toast.error(error.message, toastOptions)
-        });
-
-		} else if (permission === "denied") {
-			console.log("you denied notification permission");
-      toast.error("You denied notification permission.", toastOptions);
-		}
-	}
 
 	onMessage(messaging, (payload) => {
 		console.log("Message received. ", payload);
@@ -85,6 +44,7 @@ function Page({ page, modal, setModal, setPage }) {
 					page = {page}
 				/>
 			)}
+			{page === "login" && <Login setPage={setPage} />}
 			{page === "patients" && <Patients setPage={setPage}/>}
 			{page === "completed" && <Completed />}
 			{page === "trips" && <Trips />}

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useContext } from "react";
+import { getToken } from "firebase/messaging";
 
 import {
 	Card,
@@ -9,6 +10,7 @@ import {
 
 import { toast } from "react-toastify";
 import { LoginDetailsContext } from "../../App";
+import { messaging } from "../../firebase";
 
 import axios from "axios";
 
@@ -23,7 +25,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function Login({ setLogin }) {
+function Login({ setPage }) {
 	const [loading, setLoading] = useState(false);
 	const nameInputElement = useRef();
 	const emailInputElement = useRef();
@@ -41,13 +43,6 @@ function Login({ setLogin }) {
 			toast.error("Please fill all the fields", toastOptions);
 			setLoading(false);
 			return;
-		}
-
-		const nameRegex = /^[a-zA-Z ]{2,30}$/;
-		if (!nameRegex.test(nameInputElement.current?.value)) {
-		   toast.error("Please enter a valid name", toastOptions);
-		   setLoading(false);
-		   return;
 		}
 
 		const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
@@ -76,13 +71,15 @@ function Login({ setLogin }) {
             setLoginDetails({
                email: emailInputElement.current?.value,
                password: passwordInputElement.current?.value,
+					name: nameInputElement.current?.value,
             });
             
             localStorage.setItem("email", emailInputElement.current?.value);
             localStorage.setItem("password", passwordInputElement.current?.value);
+				localStorage.setItem("name", nameInputElement.current?.value);
 
 				setTimeout(() => {
-					setLogin('true');
+					setPage('patients');
 					setLoading(false);
 				}, 1000);
 			})

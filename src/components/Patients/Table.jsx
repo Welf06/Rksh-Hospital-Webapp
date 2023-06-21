@@ -119,9 +119,9 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 				const response = await axios.post(url, JSON.stringify(data), {
 					headers,
 				});
-				console.log(response.data.cases);
-				setData(response.data.cases);
-				setCurData(response.data.cases.slice(0, numRows));
+				console.log(response.data.cases.reverse());
+				setData(response.data.cases.reverse());
+				setCurData(response.data.cases.reverse().slice(0, numRows));
 				// Handle the response data here
 			} catch (error) {
 				console.error(error);
@@ -352,21 +352,21 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{guardianName}
+													{guardianName ? guardianName : "N/A"}
 												</Typography>
 												<Typography
 													variant="small"
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{guardianApproval}
+													{guardianApproval ? guardianApproval : "N/A"}
 												</Typography>
 												<Typography
 													variant="small"
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{volunteer}
+													{volunteer ? volunteer : "N/A"}
 												</Typography>
 											</div>
 										</td>

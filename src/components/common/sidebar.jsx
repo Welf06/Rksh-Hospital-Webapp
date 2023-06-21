@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
 	Card,
 	Typography,
@@ -24,8 +24,11 @@ import {
 	UserCircleIcon,
 } from "@heroicons/react/24/outline";
 
+import { LoginDetailsContext } from "../../App";
+
 function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 	const [open, setOpen] = useState(0);
+	const { loginDetails } = useContext(LoginDetailsContext);
 	const handleOpen = (value) => {
 		setOpen(open === value ? 0 : value);
 	};
@@ -40,10 +43,10 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 					<UserCircleIcon className="h-12 w-12 text-white" />
 					<div className="flex flex-col justify-left items-start">
 						<Typography variant="h5" color="white">
-							St. John’s Hospital
+							{loginDetails.name.split("-")[0]}
 						</Typography>
 						<Typography variant="small" color="white">
-							Koramangla
+							{loginDetails.name.split("-")[1]}
 						</Typography>
 					</div>
 				</div>
