@@ -71,7 +71,7 @@ function EditDetailsModal({ modal, setModal, sendApiCall }) {
 	return (
 		<>
 			<div
-				className="bg-black opacity-25 absolute top-14 left-0 h-[100vh] w-[100%] z-20 overflow-hidden"
+				className="bg-black opacity-25 absolute top-14 left-0 h-[110vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {
 					setModal("");
 				}}

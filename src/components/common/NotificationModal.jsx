@@ -12,7 +12,7 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 	console.log(notification);
 
 	const getETA = (eta) => {
-		return Math.floor(eta/60);
+		return Math.floor(eta / 60);
 	};
 
 	const getTime = (time) => {
@@ -20,7 +20,7 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 		console.log(date);
 		return date.toLocaleTimeString();
 	};
-	
+
 	return (
 		<>
 			<div className="bg-black opacity-25 absolute top-14 left-0 h-[125vh] w-[100%] z-20 overflow-hidden"></div>
@@ -64,14 +64,18 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 					<div className="flex justify-center gap-16 mt-4">
 						<Button
 							className="w-60 py-4 flex items-center gap-2 justify-center"
-							onClick={() => setModal({type: "video", "url": notification.video_url})}
+							onClick={() =>
+								setModal({ type: "video", url: notification.video_url })
+							}
 						>
 							<VideoCameraIcon className="h-6 w-6" />
 							Authentication Video
 						</Button>
 						<Button
 							className="w-60 py-4 flex items-center gap-2 justify-center"
-							onClick={() => setModal({"type": "image", "url":notification.document_url})}
+							onClick={() =>
+								setModal({ type: "image", url: notification.document_url })
+							}
 						>
 							<IdentificationIcon className="h-6 w-6" />
 							Patient ID
@@ -83,9 +87,9 @@ function NotificationModal({ notificationQueue, setNotificationQueue, page }) {
 							className="w-40 py-4 mb-8 flex justify-center gap-2 text-center"
 							onClick={() => {
 								setNotificationQueue(notificationQueue.slice(1));
-                if (page === "trips") {
-                  window.location.reload();
-                }
+								if (page === "trips") {
+									window.location.reload();
+								}
 							}}
 						>
 							Okay
