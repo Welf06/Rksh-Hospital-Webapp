@@ -20,7 +20,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function AcceptModal({ modal, setModal, sendApiCall }) {
+function AcceptModal({ modal, setModal, sendApiCall, setActiveTrips, activeTrips }) {
 	const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
@@ -44,6 +44,7 @@ function AcceptModal({ modal, setModal, sendApiCall }) {
 				"Patient Admitted",
 				toastOptions
 			);
+			setActiveTrips(activeTrips - 1)
          sendApiCall();
 			setTimeout(() => {
 				setModal("");

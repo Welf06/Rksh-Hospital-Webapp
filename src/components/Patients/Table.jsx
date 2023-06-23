@@ -114,7 +114,7 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 				password: loginDetails.password,
 			};
 			const headers = { "Content-Type": "application/json" };
-			console.log(data);
+			// console.log(data);
 			try {
 				const response = await axios.post(url, JSON.stringify(data), {
 					headers,

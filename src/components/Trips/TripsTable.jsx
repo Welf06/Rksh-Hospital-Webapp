@@ -124,6 +124,18 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 		}
 	};
 
+	const formatTime = (time) => {
+		// input format - 2023-06-23T20:57:14.126377+05:30
+		const date = new Date(time);
+		const hours = date.getHours();
+		const minutes = date.getMinutes();
+		const seconds = date.getSeconds();
+		const day = date.getDate();
+		const month = date.getMonth() + 1;
+		const year = date.getFullYear();
+		return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+	};
+	
 	return (
 		<Card className="h-full w-full px-14">
 			<CardHeader floated={false} shadow={false} className="rounded-none">
@@ -180,8 +192,8 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 												value1 = a.name;
 												value2 = b.name;
 											} else if (value === "accidentDetails") {
-												value1 = a.emergencyType;
-												value2 = b.emergencyType;
+												value1 = a.startTime;
+												value2 = b.startTime;
 											} else if (value === "wardDetails") {
 												value1 = `${a.ward}${a.bed}`;
 												value2 = `${b.ward}${b.bed}`;
@@ -322,14 +334,14 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 													color="blue-gray"
 													className="font-normal"
 												>
-													{natureOfEmergency}
+													{formatTime(startTime)}
 												</Typography>
 												<Typography
 													variant="small"
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{location} |{" "}
+												{natureOfEmergency} | {" "}
 													{consciousness === "Y" ? "Conscious" : "Unconscious"}
 												</Typography>
 											</div>

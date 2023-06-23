@@ -28,7 +28,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function Trips({setPage, setNotificationCount}) {
+function Trips({setPage, activeTrips, setActiveTrips}) {
    const [modal, setModal] = useState("")
 	const [data, setData] = useState([]);
 	const [curData, setCurData] = useState([]);
@@ -36,9 +36,6 @@ function Trips({setPage, setNotificationCount}) {
 
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
-	useEffect(() => {
-		setNotificationCount(0);
-	})
 	const sendApiCall = async () => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/getHospitalNotification/`;
 		const data = {
@@ -54,6 +51,7 @@ function Trips({setPage, setNotificationCount}) {
 			console.log(response.data);
 			setData(response.data.reverse());
 			setCurData(response.data.reverse().slice(0, numRows));
+			setActiveTrips(response.data.length)
 			// Handle the response data here
 		} catch (error) {
 			console.error(error);
@@ -90,7 +88,7 @@ function Trips({setPage, setNotificationCount}) {
 				/>
 			</div>
          <VideoImageModal modal={modal} setModal={setModal} />
-			{modal.type === "accept" && <AcceptModal modal={modal} setModal={setModal} sendApiCall={sendApiCall}/>}
+			{modal.type === "accept" && <AcceptModal modal={modal} setModal={setModal} sendApiCall={sendApiCall} setActiveTrips={setActiveTrips}/>}
 			{modal.type === "addDetails" && <AddDetailsModal modal={modal} setModal={setModal} sendApiCall={sendApiCall}/>}
 		</>	
 	);
