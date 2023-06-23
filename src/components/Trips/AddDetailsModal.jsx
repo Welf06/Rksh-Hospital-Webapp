@@ -93,6 +93,8 @@ function AddDetailsModal({ modal, setModal, sendApiCall }) {
 									objectFit: "cover",
 									objectPosition: "center",
 									width: "80%",
+									minWidth: "200px",
+									minHeight: "200px",
 									maxHeight: "80%",
 									borderRadius: "10px",
 								}}
