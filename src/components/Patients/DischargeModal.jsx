@@ -1,10 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import {
-	Typography,
-	Button,
-} from "@material-tailwind/react";
-
+import { Typography, Button } from "@material-tailwind/react";
 
 import axios from "axios";
 
@@ -24,17 +20,16 @@ const toastOptions = {
 	theme: "light",
 };
 
-function DischargeModal({ setModal }) {
-   const [loading, setLoading] = useState(false);
+function DischargeModal({ setModal, sendAPICall }) {
+	const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
-
 	const dischargePatient = async () => {
-      setLoading(true);
+		setLoading(true);
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/dischargeCase/`;
 		const data = {
-			hospital: { 
+			hospital: {
 				email: loginDetails.email,
 				password: loginDetails.password,
 			},
@@ -47,14 +42,18 @@ function DischargeModal({ setModal }) {
 				headers,
 			});
 			console.log(response.data);
-			toast.success("Patient Discharged, Refresh the Page to see the Changes", toastOptions);
+			toast.success(
+				"Patient Discharged, Refresh the Page to see the Changes",
+				toastOptions
+			);
+			sendAPICall();
 			setTimeout(() => {
 				setModal("");
-            setLoading(false);
+				setLoading(false);
 			}, 1000);
 			// Handle the response data here
 		} catch (error) {
-         setLoading(false);
+			setLoading(false);
 			console.error(error);
 			toast.error(error.response.data.detail, toastOptions);
 			// Handle the error here
@@ -66,7 +65,7 @@ function DischargeModal({ setModal }) {
 			<div
 				className="bg-black opacity-25 absolute top-14 left-0 h-[120vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {
-					setModal("");
+					setModal("editDetails");
 				}}
 			></div>
 			<div className="bg-white opacity-100 absolute top-[20vh] left-0 max-h-[80vh] min-h-[40vh] w-[40%] ml-[30%] mt-20 z-30 rounded-2xl border-2 border-background p-1 pb-4">
@@ -84,16 +83,16 @@ function DischargeModal({ setModal }) {
 								onClick={() => {
 									dischargePatient();
 								}}
-                        disabled={loading}
+								disabled={loading}
 							>
 								Yes
 							</Button>
 							<Button
 								className="mx-2 w-40 text-md"
 								onClick={() => {
-									setModal("");
+									setModal("editDetails");
 								}}
-                        disabled={loading}
+								disabled={loading}
 							>
 								No
 							</Button>

@@ -17,6 +17,7 @@ import {
 import { TruckIcon } from "@heroicons/react/24/solid";
 
 import Table from "./Table";
+import DischargeModal from "./DischargeModal";
 
 const toastOptions = {
 	position: "top-center",
@@ -92,6 +93,7 @@ function Patients({ setPage, activeTrips, setActiveTrips }) {
 				{modal==="tests" && <TestsModal setModal={setModal} />}
 				{modal==="doctors" && <DoctorModal setModal={setModal} />}
 				{modal==="editDetails" && <EditDetailsModal setModal={setModal} sendApiCall={sendApiCall}/>}
+				{modal==="discharge" && <DischargeModal setModal={setModal} sendApiCall={sendApiCall}/>}
 
 				<div className="ml-32 mt-7 flex justify-between pr-20">
 					<Typography variant="h3" color="black">

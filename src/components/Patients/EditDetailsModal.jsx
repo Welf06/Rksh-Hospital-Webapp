@@ -12,8 +12,8 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-import { DetailContext } from "../../App";
-import { LoginDetailsContext } from "../../App";
+import { DetailContext, LoginDetailsContext } from "../../App";
+import DischargeModal from "./DischargeModal";
 
 const toastOptions = {
 	position: "top-center",
@@ -68,6 +68,9 @@ function EditDetailsModal({ modal, setModal, sendApiCall }) {
 		}
 	};
 
+	const renderDischargeModal = () => {
+		return <DischargeModal />;
+	};
 	return (
 		<>
 			<div
@@ -88,7 +91,7 @@ function EditDetailsModal({ modal, setModal, sendApiCall }) {
 							color="red"
 							className="mx-2 my-4 w-60 text-md"
 							onClick={() => {
-								addPatientDetails();
+								setModal("discharge")
 							}}
 							disabled={loading}
 						>
