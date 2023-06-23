@@ -107,6 +107,17 @@ function Table({ setModal, modal, sendApiCall, data, setData, curData, setCurDat
 		}
 	};
 
+	const formatDate = (date) => {
+		// Date Format: 2023-06-23T16:19:57.845861Z
+		const dateObj = new Date(date);
+		const year = dateObj.getFullYear();
+		const month = dateObj.getMonth() + 1;
+		const day = dateObj.getDate();
+		const hours = dateObj.getHours();
+		const minutes = dateObj.getMinutes();
+		const seconds = dateObj.getSeconds();
+		return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+	};
 	return (
 		<Card className="h-full w-full px-14">
 			<CardHeader floated={false} shadow={false} className="rounded-none">
@@ -304,7 +315,7 @@ function Table({ setModal, modal, sendApiCall, data, setData, curData, setCurDat
 													color="blue-gray"
 													className="font-normal opacity-70"
 												>
-													{accidentLocation}
+													{formatDate(accidentTime)}
 												</Typography>
 											</div>
 										</td>

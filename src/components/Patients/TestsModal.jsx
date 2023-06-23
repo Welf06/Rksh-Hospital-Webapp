@@ -400,10 +400,10 @@ function TestsModal({ setModal }) {
 						<Button
 							className="m-auto"
 							onClick={sendAddTestsTreatmentsApiCall}
-							disabled={loading}
+							disabled={treatments === selectedTreatments && tests === selectedTests}
 						>
 							<Typography variant="small" color="white">
-								Edit
+								OK
 							</Typography>
 						</Button>
 					</div>
