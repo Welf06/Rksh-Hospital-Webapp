@@ -29,8 +29,9 @@ function Page({ page, modal, setModal, setPage }) {
 	const firstRender = useFirstRender();
 
 	useEffect(() => {
-		setActiveTrips(localStorage.getItem("activeTrips"));
-		console.log(localStorage.getItem("activeTrips"))
+		// setActiveTrips(localStorage.getItem("activeTrips"));
+		// console.log(localStorage.getItem("activeTrips"))
+		// sendApiCall();
 	}, [])
 
 	useEffect(() => {
@@ -42,8 +43,6 @@ function Page({ page, modal, setModal, setPage }) {
 		if (firstRender) return;
 		localStorage.setItem("activeTrips", activeTrips);
 	}, [activeTrips])
-
-
 
 
 
@@ -66,7 +65,7 @@ function Page({ page, modal, setModal, setPage }) {
 			<Navbar setPage={setPage} />
 			{page !== "login" && <Sidebar setPage={setPage} setModal={setModal} />}
 			{page === "login" && <Login setPage={setPage} />}
-			{page === "patients" && <Patients setPage={setPage} activeTrips={activeTrips}/>}
+			{page === "patients" && <Patients setPage={setPage} setActiveTrips={setActiveTrips} activeTrips={activeTrips}/>}
 			{page === "trips" && <Trips setPage={setPage} setActiveTrips={setActiveTrips} activeTrips={activeTrips}/>}
 			{page === "completed" && <Completed />}
 			{modal === "doctors" && <Doctors setModal={setModal} />}

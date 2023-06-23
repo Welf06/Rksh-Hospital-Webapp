@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
+
+import { toast } from "react-toastify";
 
 import TestsModal from "./TestsModal";
 import DoctorModal from "./DoctorModal";
-import AddDetailsModal from "../Trips/AddDetailsModal";
 import EditDetailsModal from "./EditDetailsModal";
+
+import { LoginDetailsContext } from "../../App";
 
 import {
 	Badge,
@@ -14,9 +18,36 @@ import { TruckIcon } from "@heroicons/react/24/solid";
 
 import Table from "./Table";
 
-function Patients({ setPage, activeTrips }) {
+function Patients({ setPage, activeTrips, setActiveTrips }) {
 	const [modal, setModal] = useState("");
+	const {loginDetails} = useContext(LoginDetailsContext);
 	
+	useEffect(() => {
+		sendApiCall();
+	}, []);
+
+	const sendApiCall = async () => {
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/getHospitalNotification/`;
+		const data = {
+			email: loginDetails.email,
+			password: loginDetails.password,
+		};
+		const headers = { "Content-Type": "application/json" };
+		console.log(data);
+		try {
+			const response = await axios.post(url, JSON.stringify(data), {
+				headers,
+			});
+			console.log(response.data);
+			setActiveTrips(response.data.length)
+			// Handle the response data here
+		} catch (error) {
+			console.error(error);
+			// toast.error(error.response.data.detail, toastOptions);
+			// Handle the error here
+		}
+	};
+
 	return (
 		<>
 			<div className="overflow-hidden">
