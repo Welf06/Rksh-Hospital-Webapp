@@ -13,10 +13,11 @@ import { TruckIcon } from "@heroicons/react/24/solid";
 
 import Table from "./Table";
 
-function Patients({ setPage }) {
+function Patients({ setPage, notificationCount }) {
 	const [testModal, setTestModal] = useState(false);
 	const [doctorModal, setDoctorModal] = useState(false);
 	const [dischargeModal, setDischargeModal] = useState(false);
+	console.log(notificationCount)
 	return (
 		<>
 			<div className="overflow-hidden">
@@ -25,12 +26,12 @@ function Patients({ setPage }) {
 				{dischargeModal && (
 					<DischargeModal setDischargeModal={setDischargeModal} />
 				)}
-
 				<div className="ml-32 mt-7 flex justify-between pr-20">
 					<Typography variant="h3" color="black">
 						Emergency Ward Patients Record
 					</Typography>
-					<Badge withBorder>
+					{notificationCount > 0 ? (
+						<Badge withBorder content={`${notificationCount}`}>
 						<Button
 							className="flex items-center gap-2 w-40"
 							onClick={() => setPage("trips")}
@@ -38,7 +39,18 @@ function Patients({ setPage }) {
 							<TruckIcon className="h-4 w-4" />
 							Active Trips
 						</Button>
-					</Badge>
+					</Badge>				
+					) : (
+						<Button
+							className="flex items-center gap-2 w-40"
+							onClick={() => setPage("trips")}
+						>
+							<TruckIcon className="h-4 w-4" />
+							Active Trips
+						</Button>
+					)}
+
+
 				</div>
 				<Table
 					setTestModal={setTestModal}

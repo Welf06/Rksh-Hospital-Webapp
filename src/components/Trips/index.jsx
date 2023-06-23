@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -28,7 +28,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function Trips({setPage}) {
+function Trips({setPage, setNotificationCount}) {
    const [modal, setModal] = useState("")
 	const [data, setData] = useState([]);
 	const [curData, setCurData] = useState([]);
@@ -36,9 +36,11 @@ function Trips({setPage}) {
 
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 
+	useEffect(() => {
+		setNotificationCount(0);
+	})
 	const sendApiCall = async () => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/getHospitalNotification/`;
-		// const url = 'http://127.0.0.1:8000/hospital/getCases/';
 		const data = {
 			email: loginDetails.email,
 			password: loginDetails.password,
@@ -67,7 +69,6 @@ function Trips({setPage}) {
 					<Typography variant="h3" color="black">
 						Active Trips
 					</Typography>
-					<Badge withBorder>
 						<Button
 							className="flex items-center gap-2 w-40 justify-center"
 							onClick={() => setPage("patients")}
@@ -75,7 +76,6 @@ function Trips({setPage}) {
 							<UserIcon className="h-4 w-4" />
 							Ward Page
 						</Button>
-					</Badge>
 				</div>
 				<TripsTable
             setModal={setModal}

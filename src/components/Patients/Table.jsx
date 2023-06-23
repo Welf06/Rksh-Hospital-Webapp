@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import axios from "axios";
-import { UsersIcon, BeakerIcon } from "@heroicons/react/24/solid";
+import { UsersIcon, BeakerIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import {
 	MagnifyingGlassIcon,
 	ChevronUpDownIcon,
@@ -54,7 +54,7 @@ const TABLE_HEAD = [
 	{ label: "Guardian Details", value: "guardianDetails" },
 	{ label: "Ward Details", value: "wardDetails" },
 	{ label: "Medical Procedures", value: "medicalProcedures" },
-	{ label: "Discharge", value: "discharge" },
+	{ label: "Edit", value: "Edit" },
 ];
 
 const toastOptions = {
@@ -395,7 +395,7 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 												/>
 											</div>
 										</td>
-										<td className={classes}>
+										<td className={`${classes} text-center`}>
 											<div className="flex gap-4 ">
 												<div className="">
 													<div
@@ -439,8 +439,8 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 											</div>
 										</td>
 										<td className={classes}>
-													<Button>
-														Edit
+													<Button className="p-3">
+														<PencilSquareIcon className="h-6 w-6"/>
 													</Button>
 										</td>
 									</tr>

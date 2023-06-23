@@ -23,6 +23,7 @@ function Page({ page, modal, setModal, setPage }) {
 // 	const [notificationQueue, setNotificationQueue] = useState([JSON.parse(
 // "{\"ambulance_license_plate\":\"1234\",\"driver_phone\":\"1234567890\",\"driver_name\":\"Test2_driver\",\"estimated_time_of_arrival\":\"2023-06-18T01:00:00Z\",\"start_location\":\"Kathmandu\",\"start_time\":\"2023-18-06T01:00:00Z\",\"password\":\"mypassword123\",\"video_url\":\"video_url\",\"nature_of_emergency\":\"Accident\",\"name\":\"Test3_patient\",\"location\":\"Kathmandu\",\"id\":2,\"conscious\":\"Y\",\"document_url\":\"document_url\",\"email\":\"info@cityhospital.com\",\"hospital_name\":\"City Hospital\"}"
 // 	)]);
+	const [notificationCount, setNotificationCount] = useState(0)
 	const { loginDetails } = useContext(LoginDetailsContext);
 
 	useEffect(() => {
@@ -34,6 +35,7 @@ function Page({ page, modal, setModal, setPage }) {
 	onMessage(messaging, (payload) => {
 		console.log("Message received. ", payload);
 		setNotificationQueue([JSON.parse(payload.data.trip_details), ...notificationQueue,]);
+		setNotificationCount(notificationCount + 1)
 		// ...
 	});
 
@@ -49,9 +51,9 @@ function Page({ page, modal, setModal, setPage }) {
 			<Navbar setPage={setPage} />
 			{page !== "login" && <Sidebar setPage={setPage} setModal={setModal} />}
 			{page === "login" && <Login setPage={setPage} />}
-			{page === "patients" && <Patients setPage={setPage}/>}
+			{page === "patients" && <Patients setPage={setPage} notificationCount={notificationCount}/>}
 			{page === "completed" && <Completed />}
-			{page === "trips" && <Trips setPage={setPage}/>}
+			{page === "trips" && <Trips setPage={setPage} setNotificationCount={setNotificationCount}/>}
 			{modal === "doctors" && <Doctors setModal={setModal} />}
 			{modal === "tests" && <Tests setModal={setModal} />}
 			{modal === "treatments" && <Treatments setModal={setModal} />}
