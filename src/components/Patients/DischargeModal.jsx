@@ -20,7 +20,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function DischargeModal({ setModal, sendAPICall }) {
+function DischargeModal({ setModal, sendApiCall }) {
 	const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
@@ -41,12 +41,12 @@ function DischargeModal({ setModal, sendAPICall }) {
 			const response = await axios.post(url, JSON.stringify(data), {
 				headers,
 			});
-			console.log(response.data);
+			console.log(response);
 			toast.success(
-				"Patient Discharged, Refresh the Page to see the Changes",
+				"Patient Discharged.",
 				toastOptions
 			);
-			sendAPICall();
+			sendApiCall();
 			setTimeout(() => {
 				setModal("");
 				setLoading(false);
@@ -55,7 +55,12 @@ function DischargeModal({ setModal, sendAPICall }) {
 		} catch (error) {
 			setLoading(false);
 			console.error(error);
-			toast.error(error.response.data.detail, toastOptions);
+			try {
+				toast.error(error.response.data.detail, toastOptions);
+			}
+			catch (err) {
+				toast.error("Something went wrong", toastOptions);
+			}
 			// Handle the error here
 		}
 	};

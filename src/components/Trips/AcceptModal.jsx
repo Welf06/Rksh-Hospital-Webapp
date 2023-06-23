@@ -100,7 +100,7 @@ function AcceptModal({ modal, setModal, sendApiCall, setActiveTrips, activeTrips
                                  {`Gender: ${detail.gender}`}
                               </Typography>
                               <Typography variant="text" color="black">
-                                 {`Blood Group: ${detail.blood_group}`}
+                                 {`Blood Group: ${detail.bloodGroup}ve`}
                               </Typography>
                               <Typography variant="text" color="black">
                                  {`Consciousness: ${detail.consciousness}`}

@@ -332,9 +332,7 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 														color="blue-gray"
 														className="font-normal opacity-70"
 													>
-													{(age !== null && gender!==null && bloodGroup!==null) ? (
-														<>{age} | {gender} | {bloodGroup}ve</>
-													):(<></>)}
+													{age !== null && `${age} | `}{gender !== null && `${gender} | `}{bloodGroup !== null && bloodGroup}
 														
 													</Typography>
 												</div>
