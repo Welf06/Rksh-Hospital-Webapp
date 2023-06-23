@@ -28,6 +28,7 @@ function Page({ page, modal, setModal, setPage }) {
 
 	useEffect(() => {
 		console.log(notificationQueue);
+		setNotificationCount(notificationCount + 1)
 	}, [notificationQueue]);
 
 
