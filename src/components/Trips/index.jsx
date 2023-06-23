@@ -89,7 +89,7 @@ function Trips({setPage, activeTrips, setActiveTrips}) {
 			</div>
          <VideoImageModal modal={modal} setModal={setModal} />
 			{modal.type === "accept" && <AcceptModal modal={modal} setModal={setModal} sendApiCall={sendApiCall} setActiveTrips={setActiveTrips}/>}
-			{modal.type === "addDetails" && <AddDetailsModal modal={modal} setModal={setModal} sendApiCall={sendApiCall}/>}
+			{modal.type === "addDetails" && <AddDetailsModal modal={modal} setModal={setModal} sendApiCall={sendApiCall} fromTrips={true}/>}
 		</>	
 	);
 }

@@ -24,7 +24,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function DischargeModal({ setDischargeModal }) {
+function DischargeModal({ setModal }) {
    const [loading, setLoading] = useState(false);
 	const { detail, setDetail } = useContext(DetailContext);
 	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
@@ -49,7 +49,7 @@ function DischargeModal({ setDischargeModal }) {
 			console.log(response.data);
 			toast.success("Patient Discharged, Refresh the Page to see the Changes", toastOptions);
 			setTimeout(() => {
-				setDischargeModal(false);
+				setModal("");
             setLoading(false);
 			}, 1000);
 			// Handle the response data here
@@ -66,7 +66,7 @@ function DischargeModal({ setDischargeModal }) {
 			<div
 				className="bg-black opacity-25 absolute top-14 left-0 h-[120vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {
-					setDischargeModal(false);
+					setModal("");
 				}}
 			></div>
 			<div className="bg-white opacity-100 absolute top-[20vh] left-0 max-h-[80vh] min-h-[40vh] w-[40%] ml-[30%] mt-20 z-30 rounded-2xl border-2 border-background p-1 pb-4">
@@ -91,7 +91,7 @@ function DischargeModal({ setDischargeModal }) {
 							<Button
 								className="mx-2 w-40 text-md"
 								onClick={() => {
-									setDischargeModal(false);
+									setModal("");
 								}}
                         disabled={loading}
 							>

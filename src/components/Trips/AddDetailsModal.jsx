@@ -98,7 +98,6 @@ function AddDetailsModal({ modal, setModal, sendApiCall }) {
 								}}
 								src={detail.document}
 							></img>
-
 							<div className="flex flex-col items-center justify-center gap-4 my-4">
 								<div className="flex gap-8">
 									<Input

@@ -68,7 +68,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
+function Table({ setModal, modal }) {
 	const [data, setData] = useState([]);
 	const [curData, setCurData] = useState([]);
 	const [filter, setFilter] = useState("");
@@ -108,13 +108,12 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 
    const sendApiCall = async () => {
 			const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCases/`;
-			// const url = 'http://127.0.0.1:8000/hospital/getCases/';
 			const data = {
 				email: loginDetails.email,
 				password: loginDetails.password,
 			};
 			const headers = { "Content-Type": "application/json" };
-			// console.log(data);
+
 			try {
 				const response = await axios.post(url, JSON.stringify(data), {
 					headers,
@@ -401,7 +400,7 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 													<div
 														className="cursor-pointer flex-col justify-center items-center"
 														onClick={() => {
-															setDoctorModal(true);
+															setModal("doctors")
 														}}
 													>
 														<UsersIcon
@@ -420,7 +419,7 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 												<div
 													className="cursor-pointer z-1000"
 													onClick={() => {
-														setTestModal(true);
+														setModal("tests");
 													}}
 												>
 													<BeakerIcon
@@ -439,7 +438,9 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 											</div>
 										</td>
 										<td className={classes}>
-													<Button className="p-3">
+													<Button className="p-3" onClick={() =>
+															setModal("editDetails")
+													}>
 														<PencilSquareIcon className="h-6 w-6"/>
 													</Button>
 										</td>

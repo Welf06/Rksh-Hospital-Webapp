@@ -32,7 +32,7 @@ const toastOptions = {
 	theme: "light",
 };
 
-function DoctorModal({ setDoctorModal, sampleData }) {
+function DoctorModal({ setModal }) {
 	const [doctors, setDoctors] = useState([]);
 	const [selectedDoctors, setSelectedDoctors] = useState([]);
    const [doctorsList, setDoctorsList] = useState([]);
@@ -188,7 +188,7 @@ function DoctorModal({ setDoctorModal, sampleData }) {
 			<div
 				className="bg-black opacity-25 absolute top-14 left-0 h-[120vh] w-[100%] z-20 overflow-hidden"
 				onClick={() => {
-					setDoctorModal(false);
+					setModal("");
 				}}
 			></div>
 			<div className="bg-white opacity-100 absolute top-14 left-0 max-h-[80vh] w-[40%] ml-[30%] mt-20 z-30 rounded-2xl border-2 border-background p-1 pb-4">

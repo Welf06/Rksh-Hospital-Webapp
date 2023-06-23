@@ -2,11 +2,12 @@ import React, { useState } from "react";
 
 import TestsModal from "./TestsModal";
 import DoctorModal from "./DoctorModal";
-import DischargeModal from "./DischargeModal";
+import AddDetailsModal from "../Trips/AddDetailsModal";
+import EditDetailsModal from "./EditDetailsModal";
+
 import {
 	Badge,
 	Typography,
-	IconButton,
 	Button,
 } from "@material-tailwind/react";
 import { TruckIcon } from "@heroicons/react/24/solid";
@@ -14,18 +15,15 @@ import { TruckIcon } from "@heroicons/react/24/solid";
 import Table from "./Table";
 
 function Patients({ setPage, activeTrips }) {
-	const [testModal, setTestModal] = useState(false);
-	const [doctorModal, setDoctorModal] = useState(false);
-	const [dischargeModal, setDischargeModal] = useState(false);
+	const [modal, setModal] = useState("");
 	
 	return (
 		<>
 			<div className="overflow-hidden">
-				{testModal && <TestsModal setTestModal={setTestModal} />}
-				{doctorModal && <DoctorModal setDoctorModal={setDoctorModal} />}
-				{dischargeModal && (
-					<DischargeModal setDischargeModal={setDischargeModal} />
-				)}
+				{modal==="tests" && <TestsModal setModal={setModal} />}
+				{modal==="doctors" && <DoctorModal setModal={setModal} />}
+				{modal==="editDetails" && <EditDetailsModal setModal={setModal} />}
+
 				<div className="ml-32 mt-7 flex justify-between pr-20">
 					<Typography variant="h3" color="black">
 						Emergency Ward Patients Record
@@ -53,9 +51,8 @@ function Patients({ setPage, activeTrips }) {
 
 				</div>
 				<Table
-					setTestModal={setTestModal}
-					setDoctorModal={setDoctorModal}
-					setDischargeModal={setDischargeModal}
+					setModal={setModal}
+					modal={modal}
 				/>
 			</div>
 		</>
