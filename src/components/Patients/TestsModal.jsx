@@ -56,8 +56,8 @@ function TestsModal({ setModal }) {
 	const sendTestApiCall = async () => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getTests/`;
 		const data = {
-			email: "info@cityhospital.com",
-			password: "mypassword123",
+			email: loginDetails.email,
+			password: loginDetails.password,
 		};
 		const headers = { "Content-Type": "application/json" };
 		console.log(data);
@@ -78,8 +78,8 @@ function TestsModal({ setModal }) {
 	const sendTreatmentApiCall = async () => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getTreatments/`;
 		const data = {
-			email: "info@cityhospital.com",
-			password: "mypassword123",
+			email: loginDetails.email,
+			password: loginDetails.password,
 		};
 		const headers = { "Content-Type": "application/json" };
 		console.log(data);
@@ -100,8 +100,8 @@ function TestsModal({ setModal }) {
 	const sendCaseTestsApiCall = async (name) => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCaseTests/`;
 		const data = {
-			email: "info@cityhospital.com",
-			password: "mypassword123",
+			email: loginDetails.email,
+			password: loginDetails.password,
 			name: name,
 		};
 		const headers = { "Content-Type": "application/json" };
@@ -122,8 +122,8 @@ function TestsModal({ setModal }) {
 	const sendCaseTreatmentsApiCall = async (name) => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCaseTreatments/`;
 		const data = {
-			email: "info@cityhospital.com",
-			password: "mypassword123",
+			email: loginDetails.email,
+			password: loginDetails.password,
 			name: name,
 		};
 		const headers = { "Content-Type": "application/json" };
@@ -145,7 +145,7 @@ function TestsModal({ setModal }) {
 	const sendAddTestsTreatmentsApiCall = async () => {
 		setLoading(true);
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/addCaseTestsTreatmentsDoctors/`;
-      const Tests = selectedTests.map((test) => {
+		const Tests = selectedTests.map((test) => {
 			return test.test.name;
 		});
 		const Treatments = selectedTreatments.map((treatment) => {
@@ -175,8 +175,7 @@ function TestsModal({ setModal }) {
 			toast.success("Tests and Treatments Edited successfully", toastOptions);
 			setLoading(false);
 			// Handle the response data here
-		}
-		catch (error) {
+		} catch (error) {
 			console.error(error);
 			toast.error(error.response.data.detail, toastOptions);
 			setLoading(false);
@@ -185,7 +184,7 @@ function TestsModal({ setModal }) {
 	};
 	const sendRemoveTestsTreatmentsApiCall = async () => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/removeCaseTestsTreatmentsDoctors/`;
-      const CurrentTests = selectedTests.map((test) => {
+		const CurrentTests = selectedTests.map((test) => {
 			return test.test.name;
 		});
 
@@ -197,7 +196,7 @@ function TestsModal({ setModal }) {
 			return !CurrentTests.includes(test);
 		});
 
-		console.log("Removed Tests: ", RemovedTests)
+		console.log("Removed Tests: ", RemovedTests);
 
 		const CurrentTreatments = selectedTreatments.map((treatment) => {
 			return treatment.treatment.name;
@@ -211,7 +210,7 @@ function TestsModal({ setModal }) {
 			return !CurrentTreatments.includes(treatment);
 		});
 
-		console.log("Removed Treatments: ", RemovedTreatments)
+		console.log("Removed Treatments: ", RemovedTreatments);
 
 		const data = {
 			hospital: {
@@ -230,10 +229,9 @@ function TestsModal({ setModal }) {
 			const response = await axios.post(url, JSON.stringify(data), {
 				headers,
 			});
-			console.log("Remove Tests and Treatments Response: ",response.data);
+			console.log("Remove Tests and Treatments Response: ", response.data);
 			// Handle the response data here
-		}
-		catch (error) {
+		} catch (error) {
 			console.error(error);
 			toast.error(error.response.data.detail, toastOptions);
 			setLoading(false);
@@ -399,7 +397,11 @@ function TestsModal({ setModal }) {
 						</div>
 					</div>
 					<div className="text-center pt-4">
-						<Button className="m-auto" onClick={sendAddTestsTreatmentsApiCall} disabled={loading}>
+						<Button
+							className="m-auto"
+							onClick={sendAddTestsTreatmentsApiCall}
+							disabled={loading}
+						>
 							<Typography variant="small" color="white">
 								Edit
 							</Typography>
