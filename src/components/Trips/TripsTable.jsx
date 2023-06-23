@@ -61,10 +61,10 @@ const TABS = [
 
 const TABLE_HEAD = [
 	{ label: "Type", value: "type" },
-	{ label: "Patient Details", value: "patientData" },
+	{ label: "Ward", value: "wardDetails" },
+	{ label: "Patient", value: "patientData" },
 	{ label: "Accident Details", value: "accidentDetails" },
 	{ label: "Ambulance Details", value: "ambulanceDetails" },
-	{ label: "Ward Details", value: "wardDetails" },
 	{ label: "ID", value: "id" },
 	{ label: "Video", value: "authenticationVideo" },
 	{ label: "Details", value: "accept" },
@@ -304,6 +304,19 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 												</div>
 											</div>
 										</td>
+										<td>
+											<div className="flex flex-col items-center justify-center">
+											<Typography
+													variant="medium"
+													color="blue-gray"
+													className="font-normal"
+												>
+												{ward !== null && bed !== null ? (
+														<>{ward} | {bed}</>
+													):(<></>)}
+												</Typography>
+											</div>
+										</td>
 										<td className={classes}>
 											<div className="flex items-center gap-3">
 												<div className="flex flex-col">
@@ -371,19 +384,7 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 												</Typography>
 											</div>
 										</td>
-										<td>
-											<div className="flex flex-col items-center justify-center">
-											<Typography
-													variant="medium"
-													color="blue-gray"
-													className="font-normal"
-												>
-												{ward !== null && bed !== null ? (
-														<>{ward} | {bed}</>
-													):(<></>)}
-												</Typography>
-											</div>
-										</td>
+
 										<td className={`${classes} text-center`}>
 											<div>
 												<Button

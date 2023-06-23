@@ -33,7 +33,7 @@ function EditDetailsModal({ modal, setModal, sendApiCall }) {
 
 	const addPatientDetails = async () => {
 		setLoading(true);
-		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/tripnotification/addTripDetails/`;
+		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/hospitalcase/updateCaseDetails/`;
 		const data = {
 			email: loginDetails.email,
 			password: loginDetails.password,
@@ -52,7 +52,7 @@ function EditDetailsModal({ modal, setModal, sendApiCall }) {
 			const response = await axios.post(url, JSON.stringify(data), {
 				headers,
 			});
-			console.log(response.data);
+			console.log(response);
 			toast.success("Patient Details Added", toastOptions);
 			sendApiCall();
 			setTimeout(() => {
