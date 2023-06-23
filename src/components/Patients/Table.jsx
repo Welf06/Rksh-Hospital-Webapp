@@ -439,9 +439,9 @@ function Table({ setTestModal, setDoctorModal, setDischargeModal }) {
 											</div>
 										</td>
 										<td className={classes}>
-											<Button
-                                 onClick={() => {setDischargeModal(true)}}
-                                 >Discharge</Button>
+													<Button>
+														Edit
+													</Button>
 										</td>
 									</tr>
 								);

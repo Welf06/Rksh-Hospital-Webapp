@@ -32,7 +32,7 @@ function Patients({ setPage }) {
 					</Typography>
 					<Badge withBorder>
 						<Button
-							className="flex items-center gap-2"
+							className="flex items-center gap-2 w-40"
 							onClick={() => setPage("trips")}
 						>
 							<TruckIcon className="h-4 w-4" />

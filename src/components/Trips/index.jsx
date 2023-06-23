@@ -8,7 +8,7 @@ import {
 	IconButton,
 	Button,
 } from "@material-tailwind/react";
-import { TruckIcon } from "@heroicons/react/24/solid";
+import { UserIcon } from "@heroicons/react/24/solid";
 
 import TripsTable from "./TripsTable";
 import VideoImageModal from "../common/VideoImageModal";
@@ -67,6 +67,15 @@ function Trips({setPage}) {
 					<Typography variant="h3" color="black">
 						Active Trips
 					</Typography>
+					<Badge withBorder>
+						<Button
+							className="flex items-center gap-2 w-40 justify-center"
+							onClick={() => setPage("patients")}
+						>
+							<UserIcon className="h-4 w-4" />
+							Ward Page
+						</Button>
+					</Badge>
 				</div>
 				<TripsTable
             setModal={setModal}

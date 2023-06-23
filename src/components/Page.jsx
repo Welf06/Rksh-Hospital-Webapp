@@ -51,7 +51,7 @@ function Page({ page, modal, setModal, setPage }) {
 			{page === "login" && <Login setPage={setPage} />}
 			{page === "patients" && <Patients setPage={setPage}/>}
 			{page === "completed" && <Completed />}
-			{page === "trips" && <Trips />}
+			{page === "trips" && <Trips setPage={setPage}/>}
 			{modal === "doctors" && <Doctors setModal={setModal} />}
 			{modal === "tests" && <Tests setModal={setModal} />}
 			{modal === "treatments" && <Treatments setModal={setModal} />}

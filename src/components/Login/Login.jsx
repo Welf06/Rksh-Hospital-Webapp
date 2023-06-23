@@ -69,7 +69,7 @@ function Login({ setPage }) {
 					email: emailInputElement.current?.value,
 					password: passwordInputElement.current?.value,
 					name: data.name,
-					hospitalAddress: `${data.address}, ${data.city}`,
+					hospitalAddress: `${data.city}`,
 					address: data.address,
 					bedcount: data.bedcount,
 					city: data.city,
@@ -85,7 +85,8 @@ function Login({ setPage }) {
 				localStorage.setItem("email", emailInputElement.current?.value);
 				localStorage.setItem("password", passwordInputElement.current?.value);
 				localStorage.setItem("name", data.name);
-				localStorage.setItem("hospitalAddress", `${data.address}, ${data.city}`);
+				// localStorage.setItem("hospitalAddress", `${data.address}, ${data.city}`);
+				localStorage.setItem("hospitalAddress", `${data.city}`);
 
 				setTimeout(() => {
 					setPage("patients");

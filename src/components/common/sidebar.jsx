@@ -17,6 +17,7 @@ import {
 	CurrencyRupeeIcon,
 	Bars3Icon,
 	ArrowLeftIcon,
+	ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import {
 	ChevronRightIcon,
@@ -28,7 +29,7 @@ import { LoginDetailsContext } from "../../App";
 
 function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 	const [open, setOpen] = useState(0);
-	const { loginDetails } = useContext(LoginDetailsContext);
+	const { loginDetails, setLoginDetails } = useContext(LoginDetailsContext);
 	const handleOpen = (value) => {
 		setOpen(open === value ? 0 : value);
 	};
@@ -152,12 +153,17 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 									setModal("tests");
 									setMenuOpen(false);
 								}}
-							>Tests</ListItem>
+							>
+								Tests
+							</ListItem>
 							<ListItem
 								onClick={() => {
 									setModal("treatments");
 									setMenuOpen(false);
-								}}>Treatments</ListItem>
+								}}
+							>
+								Treatments
+							</ListItem>
 							{/* <ListItem>Beds</ListItem> */}
 							{/* <ListItem>Ambulances</ListItem> */}
 							{/* <ListItem>Patients</ListItem> */}
@@ -200,6 +206,29 @@ function SidebarMenu({ setMenuOpen, setPage, setModal }) {
 						</List>
 					</AccordionBody>
 				</Accordion> */}
+				{/* Create an Accordian for logout */}
+				<ListItem
+					onClick={() => {
+						setPage("login");
+						setLoginDetails({})
+						localStorage.removeItem("email")
+						localStorage.removeItem("password")
+						localStorage.removeItem("name")
+						localStorage.removeItem("hospitalAddress")
+						setMenuOpen(false);
+					}}
+				>
+					<ListItemPrefix>
+						<ArrowRightOnRectangleIcon className="h-5 w-5" />
+					</ListItemPrefix>
+					<Typography
+						variant="h5"
+						color="white"
+						className="mr-auto font-normal"
+					>
+						Logout
+					</Typography>
+				</ListItem>
 			</List>
 		</Card>
 	);

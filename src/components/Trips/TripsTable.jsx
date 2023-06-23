@@ -5,10 +5,11 @@ import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import axios from "axios";
 import {
-	UsersIcon,
-	BeakerIcon,
 	TruckIcon,
 	UserIcon,
+	IdentificationIcon,
+	VideoCameraIcon,
+	PencilSquareIcon
 } from "@heroicons/react/24/solid";
 import {
 	MagnifyingGlassIcon,
@@ -65,8 +66,8 @@ const TABLE_HEAD = [
 	{ label: "Ambulance Details", value: "ambulanceDetails" },
 	{ label: "Ward Details", value: "wardDetails" },
 	{ label: "ID", value: "id" },
-	{ label: "Authentication Video", value: "authenticationVideo" },
-	{ label: "Add Details", value: "accept" },
+	{ label: "Video", value: "authenticationVideo" },
+	{ label: "Details", value: "accept" },
 	{ label: "Admit", value: "admit" },
 ];
 
@@ -170,7 +171,7 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 							{TABLE_HEAD.map(({ label, value }, index) => (
 								<th
 									key={label}
-									className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+									className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 text-center"
 									onClick={() => {
 										const newData = [...data];
 										newData.sort((a, b) => {
@@ -242,8 +243,8 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 							) => {
 								const isLast = index === data.length - 1;
 								const classes = isLast
-									? "p-4"
-									: "p-4 border-b border-blue-gray-50";
+									? "p-2"
+									: "p-2 border-b border-blue-gray-50";
 
 								return (
 									<tr
@@ -334,7 +335,7 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 											</div>
 										</td>
 										<td className={classes}>
-											<div className="flex flex-col items-center justify-center">
+											<div className="flex flex-col">
 												<Typography
 													variant="small"
 													color="blue-gray"
@@ -371,34 +372,42 @@ function Table({ setModal, modal, curData, setCurData, data, setData, numRows, s
 												</Typography>
 											</div>
 										</td>
-										<td>
+										<td className={`${classes} text-center`}>
 											<div>
 												<Button
-													className="w-20"
+												className="w-15 text-center p-2"
 													onClick={() => {
 														setModal({ type: "image", url: document });
 													}}
 												>
-													ID
+													<IdentificationIcon
+														className="h-6 w-6"
+														/>
 												</Button>
 											</div>
 										</td>
-										<td className={classes}>
+										<td className={`${classes} text-center`}>
 											<Button
+											className="w-15 text-center p-2"
 												onClick={() => {
 													setModal({ type: "video", url: video });
 												}}
 											>
-												{" "}
-												Auth Video
+												<VideoCameraIcon
+													className="h-6 w-6"
+													/>
 											</Button>
 										</td>
-										<td className={classes}>
-											<Button onClick={() => setModal({ type: "addDetails" })}>
-												Add Details
+										<td className={`${classes} text-center`}>
+											<Button 
+											className="w-15 text-center p-2"
+											onClick={() => setModal({ type: "addDetails" })}>
+												<PencilSquareIcon
+													className="h-6 w-6"
+													/> 
 											</Button>
 										</td>
-										<td className={classes}>
+										<td className={`${classes} text-center`}>
 											<Button
 												onClick={() => {
 													if (
