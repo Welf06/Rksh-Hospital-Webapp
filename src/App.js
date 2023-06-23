@@ -19,7 +19,6 @@ import './styles/App.css'
 
 export const DetailContext = createContext();
 // Testing Details:
-// const detail = {
 //   email: info@cityhospital.com
 //   password: mypassword123
 
