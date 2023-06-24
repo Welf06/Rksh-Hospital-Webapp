@@ -79,8 +79,8 @@ function DoctorModal({ setModal }) {
 	const sendCaseDoctorsApiCall = async (name) => {
 		const url = `${process.env.REACT_APP_AWS_BACKEND_URL}/hospital/getCaseDoctors/`;
 		const data = {
-			email: "info@cityhospital.com",
-			password: "mypassword123",
+			email: loginDetails.email,
+			password: loginDetails.password,
 			name: name,
 		};
 		const headers = { "Content-Type": "application/json" };
